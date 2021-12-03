@@ -1,80 +1,87 @@
 <p align="center">
-  <img src="https://avatars2.githubusercontent.com/u/5411890" alt="MultiMC logo"/>
+    <img width="256" heigth="256" src="logo.svg">
+    <h1 align="center">ManyMC</h1>
+    <p align="center">
+        An unofficial build of MultiMC with support for macOS arm64 (M1)
+    </p>
 </p>
 
-MultiMC 5
-=========
+---
 
-MultiMC is a custom launcher for Minecraft that focuses on predictability, long term stability and simplicity.
+> ### ⚠️ This is an UNOFFICIAL project. DO NOT report any issues to the MultiMC team. ONLY raise issues in THIS repository.
 
-## Development
-If you want to contribute, talk to us on [Discord](https://discord.gg/multimc) first.
+## Supported versions
 
-While blindly submitting PRs is definitely possible, they're not necessarily going to get accepted.
+All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Version `1.5.2` and before will have inverted colors and choppy performance.
 
-We aren't looking for flashy features, but expanding upon the existing feature set without distruption or endangering future viability of the project is OK.
+## Install
 
-### Building
-If you want to build MultiMC yourself, check [BUILD.md](BUILD.md) for build instructions.
+1. Make sure you have an arm64 native version of Java installed. For example, [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk).
 
-### Code formatting
-Just follow the existing formatting.
+2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of this app and extract it.
 
-In general, in order of importance:
-* Make sure your IDE is not messing up line endings or whitespace and avoid using linters.
-* Prefer readability over dogma.
-* Keep to the existing formatting.
-* Indent with 4 space unless it's in a submodule.
-* Keep lists (of arguments, parameters, initializers...) as lists, not paragraphs. It should either read from top to bottom, or left to right. Not both.
+3. The first time only, do not double-click on the app, but right-click on it and press `Open`, then `Open` again.
 
+4. As you go through the initial setup, make sure you select your arm64 native version of Java. To verify this, at the Java selection window, click on the green checkmark on the right side - it should mention `aarch64`, like:
+   ```
+   Java test succeeded!
+   Platform reported: aarch64
+   Java version reported: 17.0.1
+   ```
 
-## Translations
-Translations can be done [on crowdin](https://translate.multimc.org). Please avoid making direct pull requests to the translations repository.
+That's all! Everything will work like normal, and it will be fully optimized for your platform.
 
-## Forking/Redistributing/Custom builds policy
-We keep MultiMC open source because we think it's important to be able to see the source code for a project like this, and we do so using the Apache license.
+## Known issues
 
-Part of the reason for using the Apache license is that we don't want people using the "MultiMC" name when redistributing the project. This means people must take the time to go through the source code and remove all references to "MultiMC", including but not limited to the project icon and the title of windows, (no *MultiMC-fork* in the title).
+- Enabling full screen from the game settings permanently crashes the game
+  - To recover, select your instance in ManyMC and click on `Minecraft Folder`. In the folder that opens, edit the file `options.txt` and change `fullscreen:true` to `fullscreen:false`
+- Using text-to-speech will result in a crash
+  - No current workaround
+- Minecraft `1.12.2` and before crash on start
+  - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
 
-Apache covers reasonable use for the name - a mention of the project's origins in the About dialog and the license is acceptable. However, it should be abundantly clear that the project is a fork *without* implying that you have our blessing.
+## How does it work
 
+Minecraft is almost entirely written in Java, which means that as long as you have a native arm64 Java installed, you can almost run Minecraft natively without special work. The exception are some libraries like LWJGL, which have platform-specific binaries. However, since most of the libraries are open-source, they can be re-built or hacked to work.
 
-## License
-Copyright &copy; 2013-2021 MultiMC Contributors
+At the time of writing there is no official arm64 launcher, be it third or first party. However, the amazing MultiMC can be easily compiled to run on arm64. To comply with MultiMC's licensing, this unofficial build was rebranded as ManyMC. In order to make ManyMC use the modified libraries, we create a neat custom [meta package](https://github.com/MinecraftMachina/meta-multimc-arm64/).
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this program except in compliance with the License. You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
+## Building
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+> ⚠️ This will only work on macOS. Tested on macOS 12.0.1 arm64.
 
-## Build status
-### Linux (Intel32)
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Linux32_Build&guest=1">
-Build: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Linux32_Build)/statusIcon"/>
-</a>
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Linux32_Deploy&guest=1">
-Deploy: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Linux32_Deploy)/statusIcon"/>
-</a>
+1. Install dependencies:
 
-### Linux (AMD64)
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Linux64_Build&guest=1">
-Build: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Linux64_Build)/statusIcon"/>
-</a>
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Linux64_Deploy&guest=1">
-Deploy: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Linux64_Deploy)/statusIcon"/>
-</a>
+   ```bash
+   brew install cask-versions zulu8 qt@5 cmake
+   ```
 
-### macOS (AMD64)
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_MacOS_Build&guest=1">
-Build: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_MacOS_Build)/statusIcon"/>
-</a>
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_MacOS_Deploy&guest=1">
-Deploy: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_MacOS_Deploy)/statusIcon"/>
-</a>
+2. Install XCode and set it up to the point where you can build things from a terminal
 
-### Windows (Intel32)
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Windows_Build&guest=1">
-Build: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Windows_Build)/statusIcon"/>
-</a>
-<a href="https://teamcity.multimc.org/viewType.html?buildTypeId=Launcher_Launcher_Windows_Deploy&guest=1">
-Deploy: <img src="https://teamcity.multimc.org/app/rest/builds/buildType:(id:Launcher_Launcher_Windows_Deploy)/statusIcon"/>
-</a>
+3. Ensure that `JAVA_HOME` points to Java 8:
+   ```bash
+   export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+   ```
+
+6. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
+
+   ```bash
+   mkdir build
+   cd build
+   cmake \
+   -DCMAKE_C_COMPILER=/usr/bin/clang \
+   -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+   -DCMAKE_BUILD_TYPE=Release \
+   -DCMAKE_INSTALL_PREFIX:PATH="$(dirname $PWD)/dist/" \
+   -DCMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@5/" \
+   -DQt5_DIR="/opt/homebrew/opt/qt@5/" \
+   -DLauncher_LAYOUT=mac-bundle \
+   -DCMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
+   -DLauncher_META_URL="https://raw.githubusercontent.com/MinecraftMachina/meta-multimc-arm64/master/" \
+   -DLauncher_EMBED_SECRETS=ON \
+   ..
+   make -j$(sysctl -n hw.physicalcpu) install
+   cd ../dist
+   chmod -R u+w .
+   find . -depth -exec codesign -f -s - {} \;
+   ```
