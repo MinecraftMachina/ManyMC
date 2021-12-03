@@ -2,7 +2,7 @@
     <img width="256" heigth="256" src="logo.svg">
     <h1 align="center">ManyMC</h1>
     <p align="center">
-        An unofficial build of MultiMC with support for macOS arm64 (M1)
+        A familiar Minecraft Launcher with native support for macOS arm64 (M1)
     </p>
 </p>
 
