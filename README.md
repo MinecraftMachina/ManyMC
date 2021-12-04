@@ -39,6 +39,8 @@ That's all! Everything will work like normal, and it will be fully optimized for
   - No current workaround
 - Minecraft `1.12.2` and before crash on start
   - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
+- OptiFine doesn't work
+  - On Minecraft 1.14 and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
 
 ## How does it work
 
@@ -59,11 +61,12 @@ At the time of writing there is no official arm64 launcher, be it third or first
 2. Install XCode and set it up to the point where you can build things from a terminal
 
 3. Ensure that `JAVA_HOME` points to Java 8:
+
    ```bash
    export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
    ```
 
-6. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
+4. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
 
    ```bash
    mkdir build
@@ -77,7 +80,7 @@ At the time of writing there is no official arm64 launcher, be it third or first
       -DQt5_DIR="/opt/homebrew/opt/qt@5/" \
       -DLauncher_LAYOUT=mac-bundle \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
-      -DLauncher_META_URL="https://raw.githubusercontent.com/MinecraftMachina/meta-multimc-arm64/master/" \
+      -DLauncher_META_URL="https://minecraftmachina.github.io/meta-multimc-arm64/" \
       -DLauncher_EMBED_SECRETS=ON \
       ..
    make -j$(sysctl -n hw.physicalcpu) install
