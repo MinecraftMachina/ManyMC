@@ -215,7 +215,7 @@ void VersionPage::updateVersionControls()
     bool supportsFabric = minecraftVersion >= Version("1.14");
     ui->actionInstall_Fabric->setEnabled(controlsEnabled && supportsFabric);
 
-    bool supportsForge = minecraftVersion <= Version("1.16.5");
+    bool supportsForge = minecraftVersion >= Version("1.1.0");
     ui->actionInstall_Forge->setEnabled(controlsEnabled && supportsForge);
 
     bool supportsLiteLoader = minecraftVersion <= Version("1.12.2");
