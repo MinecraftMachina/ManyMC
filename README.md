@@ -12,7 +12,7 @@
 
 ## Supported versions
 
-All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Version `1.5.2` and before will have inverted colors and choppy performance.
+All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Version `1.5.2` and before suffer from inverted colors and choppy performance.
 
 ## Install
 
@@ -69,17 +69,17 @@ At the time of writing there is no official arm64 launcher, be it third or first
    mkdir build
    cd build
    cmake \
-   -DCMAKE_C_COMPILER=/usr/bin/clang \
-   -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-   -DCMAKE_BUILD_TYPE=Release \
-   -DCMAKE_INSTALL_PREFIX:PATH="$(dirname $PWD)/dist/" \
-   -DCMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@5/" \
-   -DQt5_DIR="/opt/homebrew/opt/qt@5/" \
-   -DLauncher_LAYOUT=mac-bundle \
-   -DCMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
-   -DLauncher_META_URL="https://raw.githubusercontent.com/MinecraftMachina/meta-multimc-arm64/master/" \
-   -DLauncher_EMBED_SECRETS=ON \
-   ..
+      -DCMAKE_C_COMPILER=/usr/bin/clang \
+      -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX:PATH="$(dirname $PWD)/dist/" \
+      -DCMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@5/" \
+      -DQt5_DIR="/opt/homebrew/opt/qt@5/" \
+      -DLauncher_LAYOUT=mac-bundle \
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
+      -DLauncher_META_URL="https://raw.githubusercontent.com/MinecraftMachina/meta-multimc-arm64/master/" \
+      -DLauncher_EMBED_SECRETS=ON \
+      ..
    make -j$(sysctl -n hw.physicalcpu) install
    cd ../dist
    chmod -R u+w .
