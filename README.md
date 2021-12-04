@@ -37,10 +37,16 @@ That's all! Everything will work like normal, and it will be fully optimized for
   - To recover, select your instance in ManyMC and click on `Minecraft Folder`. In the folder that opens, edit the file `options.txt` and change `fullscreen:true` to `fullscreen:false`
 - Using text-to-speech will result in a crash
   - No current workaround
-- Minecraft `1.12.2` and before crash on start
-  - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
+
+## Troubleshooting
+
 - OptiFine doesn't work
-  - On Minecraft 1.14 and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
+  - On Minecraft `1.14` and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
+- Forge doesn't work
+  - Minecraft `1.17` and above:
+    - It is currently unsupported
+  - Minecraft `1.12` and before:
+    - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
 
 ## How does it work
 
