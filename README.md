@@ -12,17 +12,17 @@
 
 ## Supported versions
 
-All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Fabric, Forge, and OptiFine also work across all versions.
+All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Fabric, Forge, and OptiFine also work across all versions. Even huge modpacks like All the Mods 6 run perfectly!
 
 ## Install
 
-1. Make sure you have an arm64 native version of Java installed. For example, [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk).
+1. Make sure you have an `arm64` native version of `Java 17` or above installed. For example, [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk).
 
-2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of this app and extract it.
+2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it.
 
-3. The first time only, do not double-click on the app, but right-click on it and press `Open`, then `Open` again.
+3. The first time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
 
-4. As you go through the initial setup, make sure you select your arm64 native version of Java. To verify this, at the Java selection window, click on the green checkmark on the right side - it should mention `aarch64`, like:
+4. As you go through the initial setup, make sure you select your `arm64` native version of Java. To verify this, at the Java selection window, click on the green checkmark on the right side - it should mention `aarch64`, like:
    ```
    Java test succeeded!
    Platform reported: aarch64
@@ -42,8 +42,8 @@ That's all! Everything will work like normal, and it will be fully optimized for
   - Install **one** of the below, but **not** both:
     - Forge + OptiFine
     - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
-- Minecraft `1.12` and before crash on boot
-  - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
+- Minecraft `1.16` and before crash on boot
+  - Install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
 
 ## How does it work
 
