@@ -12,7 +12,7 @@
 
 ## Supported versions
 
-All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Version `1.5.2` and before suffer from inverted colors and choppy performance.
+All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Fabric, Forge, and OptiFine also work across all versions.
 
 ## Install
 
@@ -39,12 +39,11 @@ That's all! Everything will work like normal, and it will be fully optimized for
 ## Troubleshooting
 
 - OptiFine doesn't work
-  - On Minecraft `1.14` and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + [OptiFine](https://optifine.net/)
-- Forge doesn't work
-  - Minecraft `1.17` and above:
-    - It is currently unsupported, follow [this issue](https://github.com/MinecraftMachina/ManyMC/issues/4) for updates
-  - Minecraft `1.12` and before:
-    - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
+  - Install **one** of the below, but **not** both:
+    - Forge + OptiFine
+    - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
+- Minecraft `1.12` and before crash on boot
+  - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
 
 ## How does it work
 
