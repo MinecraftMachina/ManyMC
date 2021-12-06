@@ -33,18 +33,16 @@ That's all! Everything will work like normal, and it will be fully optimized for
 
 ## Known issues
 
-- Enabling full screen from the game settings permanently crashes the game
-  - To recover, select your instance in ManyMC and click on `Minecraft Folder`. In the folder that opens, edit the file `options.txt` and change `fullscreen:true` to `fullscreen:false`
 - Using text-to-speech will result in a crash
   - No current workaround
 
 ## Troubleshooting
 
 - OptiFine doesn't work
-  - On Minecraft `1.14` and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
+  - On Minecraft `1.14` and above, install [Fabric](https://fabricmc.net) + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + [OptiFine](https://optifine.net/)
 - Forge doesn't work
   - Minecraft `1.17` and above:
-    - It is currently unsupported
+    - It is currently unsupported, follow [this issue](https://github.com/MinecraftMachina/ManyMC/issues/4) for updates
   - Minecraft `1.12` and before:
     - Install an arm64 native version of Java 8 (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
 
