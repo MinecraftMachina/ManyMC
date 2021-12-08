@@ -41,6 +41,16 @@ enum class AccountType {
     Mojang
 };
 
+enum class AccountState {
+    Unchecked,
+    Offline,
+    Working,
+    Online,
+    Errored,
+    Expired,
+    Gone
+};
+
 struct AccountData {
     QJsonObject saveState() const;
     bool resumeStateFromV2(QJsonObject data);
@@ -64,6 +74,8 @@ struct AccountData {
     QString profileId() const;
     QString profileName() const;
 
+    QString lastError() const;
+
     AccountType type = AccountType::MSA;
     bool legacy = false;
     bool canMigrateToMSA = false;
@@ -77,4 +89,9 @@ struct AccountData {
     MinecraftProfile minecraftProfile;
     MinecraftEntitlement minecraftEntitlement;
     Katabasis::Validity validity_ = Katabasis::Validity::None;
+
+    // runtime only information (not saved with the account)
+    QString internalId;
+    QString errorString;
+    AccountState accountState = AccountState::Unchecked;
 };
