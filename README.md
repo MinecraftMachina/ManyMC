@@ -14,7 +14,7 @@
 
 All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Fabric, Forge, and OptiFine also work across all versions. Even huge modpacks like All the Mods 6 run perfectly!
 
-## :raised_hands: Community
+## Community
 
 Come join the official Discord to get support and test beta versions with better performance! Link is here: https://discord.gg/q2ydGGBQmP
 
@@ -34,6 +34,10 @@ Come join the official Discord to get support and test beta versions with better
    ```
 
 That's all! Everything will work like normal, and it will be fully optimized for your platform.
+
+If you prefer, click the image below for an unofficial video tutorial:
+
+[![](https://img.youtube.com/vi/At5nF5i8oTg/0.jpg)](https://www.youtube.com/watch?v=At5nF5i8oTg)
 
 ## Known issues
 
