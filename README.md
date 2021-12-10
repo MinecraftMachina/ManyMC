@@ -14,6 +14,10 @@
 
 All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work great. Fabric, Forge, and OptiFine also work across all versions. Even huge modpacks like All the Mods 6 run perfectly!
 
+## :raised_hands: Community
+
+Come join the official Discord to get support and test beta versions with better performance! Link is here: https://discord.gg/q2ydGGBQmP
+
 ## Install
 
 1. Make sure you have an `arm64` native version of `Java 17` or above installed. For example, [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk).
