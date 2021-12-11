@@ -46,12 +46,14 @@ If you prefer, click the image below for an unofficial video tutorial:
 
 ## Troubleshooting
 
+- Minecraft updates are lagging behind MultiMC
+  - To force an update of the Minecraft metadata, [visit this link](https://pull.git.ci/process/MinecraftMachina/meta-multimc-arm64)
 - OptiFine doesn't work
-  - Install **one** of the below, but **not** both:
+  - To fix, install one of the two combinations below:
     - Forge + OptiFine
     - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
 - Minecraft `1.16` and before crash on boot
-  - Install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)) and set ManyMC to use this version instead
+  - To fix, install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)). Set your instance in ManyMC to use this version
 
 ## How does it work
 
