@@ -36,5 +36,9 @@
     <true/>
     <key>NSHumanReadableCopyright</key>
     <string>${MACOSX_BUNDLE_COPYRIGHT}</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need microphone access if you use any mods that require it</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Need camera access if you use any mods that require it</string>
 </dict>
 </plist>

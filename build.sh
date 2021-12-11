@@ -19,3 +19,4 @@ JAVA_HOME=$(/usr/libexec/java_home -v 1.8 -a arm64) \
 make -C "build" -j$(sysctl -n hw.physicalcpu) install
 chmod -R u+w "dist/ManyMC.app"
 find "dist/ManyMC.app" -depth -exec codesign -f -s - {} \;
+codesign -f --no-strict -s - --entitlements "entitlements.plist" "dist/ManyMC.app"
