@@ -73,31 +73,8 @@ At the time of writing there is no official arm64 launcher, be it third or first
 
 2. Install XCode and set it up to the point where you can build things from a terminal
 
-3. Ensure that `JAVA_HOME` points to Java 8:
+3. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
 
    ```bash
-   export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-   ```
-
-4. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
-
-   ```bash
-   mkdir build
-   cd build
-   cmake \
-      -DCMAKE_C_COMPILER=/usr/bin/clang \
-      -DCMAKE_CXX_COMPILER=/usr/bin/clang++ \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_INSTALL_PREFIX:PATH="$(dirname $PWD)/dist/" \
-      -DCMAKE_PREFIX_PATH="/opt/homebrew/opt/qt@5/" \
-      -DQt5_DIR="/opt/homebrew/opt/qt@5/" \
-      -DLauncher_LAYOUT=mac-bundle \
-      -DCMAKE_OSX_DEPLOYMENT_TARGET=10.7 \
-      -DLauncher_META_URL="https://minecraftmachina.github.io/meta-multimc-arm64/" \
-      -DLauncher_EMBED_SECRETS=ON \
-      ..
-   make -j$(sysctl -n hw.physicalcpu) install
-   cd ../dist
-   chmod -R u+w .
-   find . -depth -exec codesign -f -s - {} \;
+   ./build.sh
    ```
