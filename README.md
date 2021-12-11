@@ -16,7 +16,7 @@ All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work g
 
 ## Community
 
-Come join the official Discord to get support and test beta versions with better performance! Link is here: https://discord.gg/q2ydGGBQmP
+Come join the official Discord to get support and test beta versions with better performance! Link is here: https://discord.gg/CcFxPaDnjv
 
 ## Install
 
