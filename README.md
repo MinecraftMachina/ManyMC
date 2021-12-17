@@ -63,15 +63,25 @@ At the time of writing there is no official arm64 launcher, be it third or first
 
 ## Building
 
-> ⚠️ This will only work on macOS. Tested on macOS 12.0.1 arm64.
+> ⚠️ This will only work on macOS. Tested on:
+- macOS 12.0.1 arm64
+- macOS 12.1 arm64
 
-1. Install dependencies:
+1. Clone the source and subrepos:
 
-   ```bash
-   brew install cask-versions zulu8 qt@5 cmake
+   ```
+   git clone --recursive https://github.com/MinecraftMachina/ManyMC.git
    ```
 
-2. Install XCode and set it up to the point where you can build things from a terminal
+2. Install dependencies:
+
+   ```bash
+   brew install qt@5 cmake
+   ```
+   
+   (You will also need an arm64 JDK, such as [azul](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk))
+
+2. Install [XCode](https://xcodereleases.com/) and [set it up](https://stackoverflow.com/a/9329325) to the point where you can build things from a terminal. 
 
 3. Ensure that `JAVA_HOME` points to Java 8:
 
@@ -100,4 +110,17 @@ At the time of writing there is no official arm64 launcher, be it third or first
    cd ../dist
    chmod -R u+w .
    find . -depth -exec codesign -f -s - {} \;
+   ```
+   
+   You may experience an error that fails your build:
+   
+   ```
+   error: Source option 6 is no longer supported. Use 7 or later.
+   error: Target option 6 is no longer supported. Use 7 or later.
+   ```
+   
+   This is most likely caused by `/usr/libexec/java_home` using `/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home` instead of a JDK you installed. To fix this, you will likely need to set `JAVA_HOME` manually to wherever zulu8 is if you didn't use Homebrew:
+   
+   ```bash
+   export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/"
    ```
