@@ -63,18 +63,26 @@ At the time of writing there is no official arm64 launcher, be it third or first
 
 ## Building
 
-> ⚠️ This will only work on macOS. Tested on macOS 12.0.1 arm64.
+> ⚠️ This will only work on macOS. Tested on macOS 12.1 arm64.
 
 1. Install dependencies:
 
    ```bash
-   brew install cask-versions zulu8 qt@5 cmake
+   brew tap homebrew/cask-versions
+   brew install zulu8 qt@5 cmake
    ```
 
-2. Install XCode and set it up to the point where you can build things from a terminal
+2. Install XCode and make sure the command line tools are set up:
 
-3. Run a build (you may have to set `DLauncher_EMBED_SECRETS` to `OFF`):
+   ```bash
+   xcode-select -p
+   ```
+
+3. Run a build:
 
    ```bash
    ./build.sh
    ```
+   
+   - If you don't have your own secrets, set `DLauncher_EMBED_SECRETS` to `OFF`.
+   - If you get weird Java errors, you may have to manually set your `JAVA_HOME` to the zulu8 you just installed.

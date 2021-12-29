@@ -3,7 +3,7 @@ set -eu -o pipefail -E
 
 rm -r "build" "dist" || true
 mkdir "build"
-JAVA_HOME=$(/usr/libexec/java_home -v 1.8) \
+JAVA_HOME=$(/usr/libexec/java_home -v 1.8 -a arm64) \
     cmake \
     -B "build" \
     -DCMAKE_C_COMPILER="/usr/bin/clang " \
