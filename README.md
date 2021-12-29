@@ -39,14 +39,9 @@ If you prefer, click the image below for an unofficial video tutorial:
 
 [![](https://img.youtube.com/vi/At5nF5i8oTg/0.jpg)](https://www.youtube.com/watch?v=At5nF5i8oTg)
 
-## Known issues
-
-- Using text-to-speech will result in a crash
-  - No current workaround
-
 ## Troubleshooting
 
-- Minecraft updates are lagging behind MultiMC
+- Minecraft/MultiMC released an update, but I can't see it in ManyMC
   - To force an update of the Minecraft metadata, [visit this link](https://pull.git.ci/process/MinecraftMachina/meta-multimc-arm64)
 - OptiFine doesn't work
   - To fix, install one of the two combinations below:
