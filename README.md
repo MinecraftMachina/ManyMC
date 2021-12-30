@@ -23,7 +23,9 @@ Come join the official Discord to get support and test beta versions with better
 1. Make sure you have an `arm64` native version of `Java 17` or above installed. For example, [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk).
 
 2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it.
-
+	
+	> **:warning: If you are coming from ManyMC Build 4 or before and you want to keep your data, you will have to migrate it. Check out [these release notes for more information](https://github.com/MinecraftMachina/ManyMC/releases/tag/v0.0.5).**
+	
 3. The first time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
 
 4. As you go through the initial setup, make sure you select your `arm64` native version of Java. To verify this, at the Java selection window, click on the green checkmark on the right side - it should mention `aarch64`, like:
