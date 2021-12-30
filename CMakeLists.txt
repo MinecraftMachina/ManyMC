@@ -108,6 +108,10 @@ add_custom_target(tcversion echo "\\#\\#teamcity[setParameter name=\\'env.LAUNCH
 
 ################################ 3rd Party Libs ################################
 
+if(APPLE AND EXISTS /opt/homebrew/opt/qt@5)
+    list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew/opt/qt@5")
+endif()
+
 # Find the required Qt parts
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
