@@ -7,8 +7,8 @@
 </p>
 
 ---
-
 > ### ⚠️ This is an UNOFFICIAL project. DO NOT report any issues to the MultiMC team. ONLY raise issues in THIS repository.
+---
 
 ## Supported versions
 
@@ -17,6 +17,10 @@ All stable Minecraft versions from `1.6.4` to `1.18` have been tested and work g
 ## Community
 
 Come join the official Discord to get support and test beta versions with better performance! Link is here: https://discord.gg/CcFxPaDnjv
+
+## More fixes
+
+Can't sprint and attack at the same time? Or sneak and scroll? These are all old and unfixed Minecraft bugs on macOS. Get rid of them now using our mod [McMouser](https://github.com/MinecraftMachina/McMouser) ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/mcmouser)).
 
 ## Install
 
