@@ -94,7 +94,7 @@ bool parseXTokenResponse(QByteArray & data, Katabasis::Token &output, QString na
         return false;
     }
     if(!getString(obj.value("Token"), output.token)) {
-        qWarning() << "User Token is not a timestamp";
+        qWarning() << "User Token is not a string";
         return false;
     }
     auto arrayVal = obj.value("DisplayClaims").toObject().value("xui");
@@ -227,7 +227,7 @@ bool parseMinecraftEntitlements(QByteArray & data, MinecraftEntitlement &output)
 
     auto obj = doc.object();
     output.canPlayMinecraft = false;
-    output.ownsMinecraft = true;
+    output.ownsMinecraft = false;
 
     auto itemsArray = obj.value("items").toArray();
     for(auto item: itemsArray) {

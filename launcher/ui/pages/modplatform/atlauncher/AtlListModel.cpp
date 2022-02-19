@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020-2021 Jamie Mansfield <jmansfield@cadixdev.org>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "AtlListModel.h"
 
 #include <BuildConfig.h>
@@ -70,11 +86,11 @@ void ListModel::request()
     modpacks.clear();
     endResetModel();
 
-    auto *netJob = new NetJob("Atl::Request");
+    auto *netJob = new NetJob("Atl::Request", APPLICATION->network());
     auto url = QString(BuildConfig.ATL_DOWNLOAD_SERVER_URL + "launcher/json/packsnew.json");
     netJob->addNetAction(Net::Download::makeByteArray(QUrl(url), &response));
     jobPtr = netJob;
-    jobPtr->start(APPLICATION->network());
+    jobPtr->start();
 
     QObject::connect(netJob, &NetJob::succeeded, this, &ListModel::requestFinished);
     QObject::connect(netJob, &NetJob::failed, this, &ListModel::requestFailed);
@@ -167,7 +183,7 @@ void ListModel::requestLogo(QString file, QString url)
     }
 
     MetaEntryPtr entry = APPLICATION->metacache()->resolveEntry("ATLauncherPacks", QString("logos/%1").arg(file.section(".", 0, 0)));
-    NetJob *job = new NetJob(QString("ATLauncher Icon Download %1").arg(file));
+    NetJob *job = new NetJob(QString("ATLauncher Icon Download %1").arg(file), APPLICATION->network());
     job->addNetAction(Net::Download::makeCached(QUrl(url), entry));
 
     auto fullPath = entry->getFullPath();
@@ -185,7 +201,7 @@ void ListModel::requestLogo(QString file, QString url)
         emit logoFailed(file);
     });
 
-    job->start(APPLICATION->network());
+    job->start();
 
     m_loadingLogos.append(file);
 }

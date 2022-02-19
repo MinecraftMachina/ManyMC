@@ -202,7 +202,7 @@ QString MinecraftInstance::jarModsDir() const
     return jarmods_dir.absolutePath();
 }
 
-QString MinecraftInstance::loaderModsDir() const
+QString MinecraftInstance::modsRoot() const
 {
     return FS::PathCombine(gameRoot(), "mods");
 }
@@ -431,8 +431,7 @@ QStringList MinecraftInstance::processMinecraftArgs(
 
     QMap<QString, QString> token_mapping;
     // yggdrasil!
-    if(session)
-    {
+    if(session) {
         // token_mapping["auth_username"] = session->username;
         token_mapping["auth_session"] = session->session;
         token_mapping["auth_access_token"] = session->access_token;
@@ -440,6 +439,9 @@ QStringList MinecraftInstance::processMinecraftArgs(
         token_mapping["auth_uuid"] = session->uuid;
         token_mapping["user_properties"] = session->serializeUserProperties();
         token_mapping["user_type"] = session->user_type;
+        if(session->demo) {
+            args_pattern += " --demo";
+        }
     }
 
     // blatant self-promotion.
@@ -872,7 +874,9 @@ shared_qobject_ptr<LaunchTask> MinecraftInstance::createLaunchTask(AuthSessionPt
     // if we aren't in offline mode,.
     if(session->status != AuthSession::PlayableOffline)
     {
-        process->appendStep(new ClaimAccount(pptr, session));
+        if(!session->demo) {
+            process->appendStep(new ClaimAccount(pptr, session));
+        }
         process->appendStep(new Update(pptr, Net::Mode::Online));
     }
     else
@@ -961,7 +965,7 @@ std::shared_ptr<ModFolderModel> MinecraftInstance::loaderModList() const
 {
     if (!m_loader_mod_list)
     {
-        m_loader_mod_list.reset(new ModFolderModel(loaderModsDir()));
+        m_loader_mod_list.reset(new ModFolderModel(modsRoot()));
         m_loader_mod_list->disableInteraction(isRunning());
         connect(this, &BaseInstance::runningStatusChanged, m_loader_mod_list.get(), &ModFolderModel::disableInteraction);
     }

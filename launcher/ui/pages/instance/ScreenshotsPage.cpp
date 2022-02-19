@@ -250,6 +250,12 @@ bool ScreenshotsPage::eventFilter(QObject *obj, QEvent *evt)
         return QWidget::eventFilter(obj, evt);
     }
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(evt);
+
+    if (keyEvent->matches(QKeySequence::Copy)) {
+        on_actionCopy_File_s_triggered();
+        return true;
+    }
+
     switch (keyEvent->key())
     {
     case Qt::Key_Delete:
@@ -272,6 +278,11 @@ ScreenshotsPage::~ScreenshotsPage()
 void ScreenshotsPage::ShowContextMenu(const QPoint& pos)
 {
     auto menu = ui->toolBar->createContextMenu(this, tr("Context menu"));
+
+    if (ui->listView->selectionModel()->selectedRows().size() > 1) {
+        menu->removeAction( ui->actionCopy_Image );
+    }
+
     menu->exec(ui->listView->mapToGlobal(pos));
     delete menu;
 }
@@ -304,7 +315,7 @@ void ScreenshotsPage::on_actionUpload_triggered()
         return;
 
     QList<ScreenShot::Ptr> uploaded;
-    auto job = NetJob::Ptr(new NetJob("Screenshot Upload"));
+    auto job = NetJob::Ptr(new NetJob("Screenshot Upload", APPLICATION->network()));
     if(selection.size() < 2)
     {
         auto item = selection.at(0);
@@ -314,6 +325,7 @@ void ScreenshotsPage::on_actionUpload_triggered()
 
         m_uploadActive = true;
         ProgressDialog dialog(this);
+
         if(dialog.execWithTask(job.get()) != QDialog::Accepted)
         {
             CustomMessageBox::selectable(this, tr("Failed to upload screenshots!"),
@@ -345,7 +357,7 @@ void ScreenshotsPage::on_actionUpload_triggered()
         job->addNetAction(ImgurUpload::make(screenshot));
     }
     SequentialTask task;
-    auto albumTask = NetJob::Ptr(new NetJob("Imgur Album Creation"));
+    auto albumTask = NetJob::Ptr(new NetJob("Imgur Album Creation", APPLICATION->network()));
     auto imgurAlbum = ImgurAlbumCreation::make(uploaded);
     albumTask->addNetAction(imgurAlbum);
     task.addTask(job);
@@ -354,8 +366,12 @@ void ScreenshotsPage::on_actionUpload_triggered()
     ProgressDialog prog(this);
     if (prog.execWithTask(&task) != QDialog::Accepted)
     {
-        CustomMessageBox::selectable(this, tr("Failed to upload screenshots!"),
-                                     tr("Unknown error"), QMessageBox::Warning)->exec();
+        CustomMessageBox::selectable(
+            this,
+            tr("Failed to upload screenshots!"),
+            tr("Unknown error"),
+            QMessageBox::Warning
+        )->exec();
     }
     else
     {
@@ -370,6 +386,42 @@ void ScreenshotsPage::on_actionUpload_triggered()
         )->exec();
     }
     m_uploadActive = false;
+}
+
+void ScreenshotsPage::on_actionCopy_Image_triggered()
+{
+    auto selection = ui->listView->selectionModel()->selectedRows();
+    if(selection.size() < 1)
+    {
+        return;
+    }
+
+    // You can only copy one image to the clipboard. In the case of multiple selected files, only the first one gets copied.
+    auto item = selection[0];
+    auto info = m_model->fileInfo(item);
+    QImage image(info.absoluteFilePath());
+    Q_ASSERT(!image.isNull());
+    QApplication::clipboard()->setImage(image, QClipboard::Clipboard);
+}
+
+void ScreenshotsPage::on_actionCopy_File_s_triggered()
+{
+    auto selection = ui->listView->selectionModel()->selectedRows();
+    if(selection.size() < 1)
+    {
+        // Don't do anything so we don't empty the users clipboard
+        return;
+    }
+
+    QString buf = "";
+    for (auto item : selection)
+    {
+        auto info = m_model->fileInfo(item);
+        buf += "file:///" + info.absoluteFilePath() + "\r\n";
+    }
+    QMimeData* mimeData = new QMimeData();
+    mimeData->setData("text/uri-list", buf.toLocal8Bit());
+    QApplication::clipboard()->setMimeData(mimeData);
 }
 
 void ScreenshotsPage::on_actionDelete_triggered()

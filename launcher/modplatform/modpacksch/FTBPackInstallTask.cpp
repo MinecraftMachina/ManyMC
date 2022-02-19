@@ -1,3 +1,20 @@
+/*
+ * Copyright 2020-2021 Jamie Mansfield <jmansfield@cadixdev.org>
+ * Copyright 2020-2021 Petr Mrazek <peterix@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include "FTBPackInstallTask.h"
 
 #include "FileSystem.h"
@@ -46,12 +63,11 @@ void PackInstallTask::executeTask()
         return;
     }
 
-    auto *netJob = new NetJob("ModpacksCH::VersionFetch");
-    auto searchUrl = QString(BuildConfig.MODPACKSCH_API_BASE_URL + "public/modpack/%1/%2")
-            .arg(m_pack.id).arg(version.id);
+    auto *netJob = new NetJob("ModpacksCH::VersionFetch", APPLICATION->network());
+    auto searchUrl = QString(BuildConfig.MODPACKSCH_API_BASE_URL + "public/modpack/%1/%2").arg(m_pack.id).arg(version.id);
     netJob->addNetAction(Net::Download::makeByteArray(QUrl(searchUrl), &response));
     jobPtr = netJob;
-    jobPtr->start(APPLICATION->network());
+    jobPtr->start();
 
     QObject::connect(netJob, &NetJob::succeeded, this, &PackInstallTask::onDownloadSucceeded);
     QObject::connect(netJob, &NetJob::failed, this, &PackInstallTask::onDownloadFailed);
@@ -96,7 +112,7 @@ void PackInstallTask::downloadPack()
 {
     setStatus(tr("Downloading mods..."));
 
-    jobPtr = new NetJob(tr("Mod download"));
+    jobPtr = new NetJob(tr("Mod download"), APPLICATION->network());
     for(auto file : m_version.files) {
         if(file.serverOnly) continue;
 
@@ -142,7 +158,7 @@ void PackInstallTask::downloadPack()
         setProgress(current, total);
     });
 
-    jobPtr->start(APPLICATION->network());
+    jobPtr->start();
 }
 
 void PackInstallTask::install()
