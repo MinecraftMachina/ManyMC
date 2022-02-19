@@ -30,9 +30,16 @@ Can't sprint and attack at the same time? Or sneak and scroll? These are all old
 	
 	> **:warning: If you are coming from ManyMC Build 4 or before and you want to keep your data, you will have to migrate it. Check out [these release notes for more information](https://github.com/MinecraftMachina/ManyMC/releases/tag/v0.0.5).**
 	
-3. The first time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
+3. Start the app. If it gives an error about code signing, one time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
 
-4. As you go through the initial setup, make sure you select your `arm64` native version of Java. To verify this, at the Java selection window, click on the green checkmark on the right side - it should mention `aarch64`, like:
+4. As you go through the initial setup, make sure to select your `arm64` native version of Java. To verify this, at the Java selection window, make sure the "Architecture" column of your selected version says `aarch64`:
+   
+   ![](wiki/pic1.png)
+   
+4. Alternatively, you can also click on the green checkmark on the right side - it should mention `aarch64`, like this:
+   
+   ![](wiki/pic2.png)
+   
    ```
    Java test succeeded!
    Platform reported: aarch64
