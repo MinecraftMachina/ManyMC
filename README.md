@@ -35,16 +35,6 @@ Can't sprint and attack at the same time? Or sneak and scroll? These are all old
 4. As you go through the initial setup, make sure to select your `arm64` native version of Java. To verify this, at the Java selection window, make sure the "Architecture" column of your selected version says `aarch64`:
    
    ![](wiki/pic1.png)
-   
-4. Alternatively, you can also click on the green checkmark on the right side - it should mention `aarch64`, like this:
-   
-   ![](wiki/pic2.png)
-   
-   ```
-   Java test succeeded!
-   Platform reported: aarch64
-   Java version reported: 17.0.1
-   ```
 
 That's all! Everything will work like normal, and it will be fully optimized for your platform.
 
