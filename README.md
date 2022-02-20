@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="256" heigth="256" src="logo.svg">
+    <img width="256" heigth="256" src="wiki/logo.svg">
     <h1 align="center">ManyMC</h1>
     <p align="center">
         A familiar Minecraft Launcher with native support for macOS arm64 (M1)
