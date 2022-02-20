@@ -406,7 +406,7 @@ public:
         actionPatreon.setTextId(QT_TRANSLATE_NOOP("MainWindow", "Support %1"));
         actionPatreon.setTooltipId(QT_TRANSLATE_NOOP("MainWindow", "Open the %1 Patreon page."));
         all_actions.append(&actionPatreon);
-        mainToolBar->addAction(actionPatreon);
+//        mainToolBar->addAction(actionPatreon);
 
         actionCAT = TranslatedAction(MainWindow);
         actionCAT->setObjectName(QStringLiteral("actionCAT"));
@@ -416,7 +416,7 @@ public:
         actionCAT.setTooltipId(QT_TRANSLATE_NOOP("MainWindow", "It's a fluffy kitty :3"));
         actionCAT->setPriority(QAction::LowPriority);
         all_actions.append(&actionCAT);
-        mainToolBar->addAction(actionCAT);
+//        mainToolBar->addAction(actionCAT);
 
         // profile menu and its actions
         actionManageAccounts = TranslatedAction(MainWindow);
