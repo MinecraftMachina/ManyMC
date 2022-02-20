@@ -7,7 +7,7 @@
 </p>
 
 ---
-> ### ⚠️ This is an UNOFFICIAL project. DO NOT report any issues to the MultiMC team. ONLY raise issues in THIS repository.
+> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC team. Only report issues with ManyMC here.
 ---
 
 ## Supported versions
