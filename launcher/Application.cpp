@@ -712,7 +712,7 @@ Application::Application(int &argc, char **argv) : QApplication(argc, argv)
         if(!BuildConfig.ANALYTICS_ID.isEmpty())
         {
             // Analytics
-            m_settings->registerSetting("Analytics", true);
+            m_settings->registerSetting("Analytics", false);
             m_settings->registerSetting("AnalyticsSeen", 0);
             m_settings->registerSetting("AnalyticsClientID", QString());
         }
