@@ -83,5 +83,5 @@ At the time of writing there is no official arm64 launcher, be it third or first
    ./build.sh
    ```
    
-   - If you don't have your own secrets, set `DLauncher_EMBED_SECRETS` to `OFF`.
+   - If you have your own secrets, make sure they are placed in a directory named `secrets`.
    - If you get weird Java errors, you may have to manually set your `JAVA_HOME` to the zulu8 you just installed.
