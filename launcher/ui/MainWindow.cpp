@@ -711,6 +711,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
         ui->newsToolBar->insertWidget(ui->actionMoreNews, newsLabel);
         QObject::connect(newsLabel, &QAbstractButton::clicked, this, &MainWindow::newsButtonClicked);
         QObject::connect(m_newsChecker.get(), &NewsChecker::newsLoaded, this, &MainWindow::updateNewsLabel);
+        QObject::connect(m_newsChecker.get(), &NewsChecker::newsLoadingFailed, this, &MainWindow::updateNewsLabel);
         updateNewsLabel();
     }
 
@@ -1701,7 +1702,7 @@ void MainWindow::on_actionPatreon_triggered()
 
 void MainWindow::on_actionMoreNews_triggered()
 {
-    DesktopServices::openUrl(QUrl("https://multimc.org/posts.html"));
+    DesktopServices::openUrl(QUrl("https://github.com/MinecraftMachina/ManyMC"));
 }
 
 void MainWindow::newsButtonClicked()
@@ -1713,7 +1714,7 @@ void MainWindow::newsButtonClicked()
     }
     else
     {
-        DesktopServices::openUrl(QUrl("https://multimc.org/posts.html"));
+        DesktopServices::openUrl(QUrl("https://github.com/MinecraftMachina/ManyMC"));
     }
 }
 
