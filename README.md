@@ -50,7 +50,7 @@ If you prefer, click the image below for an unofficial video tutorial:
   - To fix, install one of the two combinations below:
     - Forge + OptiFine
     - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
-  - On Minecraft `1.8.9`, you need the latest **preview** version of OptiFine
+  - Use the latest **preview** version of OptiFine
 - Minecraft `1.16` and before crash on boot
   - To fix, install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)). Set your instance in ManyMC to use this version
 - Forge crashes on boot
