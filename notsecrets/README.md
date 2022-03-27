@@ -1,4 +1,4 @@
-# DevLauncher (Not) Secrets
+# ManyMC (Not) Secrets
 
 This is a dummy implementation of MultiMC's _Secrets_ library, used to store private information needed for:
 - Application name and logo (and branding in general)
@@ -8,7 +8,7 @@ This is a dummy implementation of MultiMC's _Secrets_ library, used to store pri
 
 ## MultiMC development
 
-In its current state, the `notsecrets` library is suitable for MultiMC code contributions (the code builds as `DevLauncher`).
+In its current state, the `notsecrets` library is suitable for ManyMC code contributions.
 
 All you have to do is add the Microsoft client ID. See `Secrets.cpp` for details.
 
