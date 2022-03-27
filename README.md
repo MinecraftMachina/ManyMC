@@ -56,7 +56,9 @@ If you prefer, click the image below for an unofficial video tutorial:
 - Forge crashes on boot
   - Either update it to the latest version, or downgrade to Java build 320 or before
 - Minecraft before 1.6.4 has inverted colors and stuttering
-  - On Minecraft 1.4.7-1.5.2, enable Fullscreen mode from the game's `Options` > `Video Settings`. On older versions, there is currently no workaround
+  - On Minecraft 1.4.7-1.5.2, enable Fullscreen mode from the game's `Options` > `Video Settings`.
+  - On older versions, press F11 to enable fullscreen. 
+    - You may have to press Fn+F11 or rebind your Show Desktop keybind in `System Preferences` > `Mission Control` > `Show Desktop` for F11 to be sent to Minecraft
 
 
 ## How does it work
