@@ -90,5 +90,5 @@ At the time of writing there is no official arm64 launcher, be it third or first
    ./build.sh
    ```
    
-   - If you have your own secrets, make sure they are placed in a directory named `secrets`.
+   - You will need your own secrets if you want login with Microsoft account to work. Copy [notsecrets](notsecrets) to a new directory called `secrets` and follow the README inside.
    - If you get weird Java errors, you may have to manually set your `JAVA_HOME` to the zulu8 you just installed.
