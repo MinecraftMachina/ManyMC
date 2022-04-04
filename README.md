@@ -52,9 +52,9 @@ If you prefer, click the image below for an unofficial video tutorial:
     - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
   - Use the latest **preview** version of OptiFine
 - Minecraft `1.16` and before crash on boot
-  - To fix, install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)). Set your instance in ManyMC to use this version
-- Forge crashes on boot
-  - Either update it to the latest version, or downgrade to Java build 320 or before
+  - To fix, install an `arm64` native version of `Java 8` (i.e. [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)). Set your instance in ManyMC to use this version of Java
+- Forge (modpack) crashes on boot
+  - Either update Forge to the latest version, or downgrade Java to build 320 or before
 - Minecraft before 1.6.4 has inverted colors and stuttering
   - On Minecraft 1.4.7-1.5.2, enable Fullscreen mode from the game's `Options` > `Video Settings`.
   - On older versions, press F11 to enable fullscreen. 
