@@ -1,0 +1,23 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: dependencies
+      run: |
+           brew tap homebrew/cask-versions
+           brew install zulu8 qt@5 cmake
+    - name: xcode
+      run: xcode-select -p
+    - name: build
+      run: ./build.sh
