@@ -96,6 +96,13 @@ public:
     QString FMLLIBS_BASE_URL = "https://files.multimc.org/fmllibs/";
     QString TRANSLATIONS_BASE_URL = "https://files.multimc.org/translations/";
 
+
+    QString AUTH_BASE_MOJANG = "https://authserver.mojang.com/";
+    QString AUTH_BASE_ELYBY = "https://authserver.ely.by/auth/";
+
+    QString SKINS_BASE_MOJANG = "https://crafatar.com/skins/";
+    QString SKINS_BASE_ELYBY = "http://skinsystem.ely.by/skins/";
+
     QString MODPACKSCH_API_BASE_URL = "https://api.modpacks.ch/";
 
     QString LEGACY_FTB_CDN_BASE_URL = "https://dist.creeper.host/FTB2/";

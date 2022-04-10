@@ -84,7 +84,7 @@ void Yggdrasil::refresh() {
     req.insert("requestUser", false);
     QJsonDocument doc(req);
 
-    QUrl reqUrl("https://authserver.mojang.com/refresh");
+    QUrl reqUrl(m_data->provider->authEndpoint() + "refresh");
     QByteArray requestData = doc.toJson();
 
     sendRequest(reqUrl, requestData);
@@ -129,7 +129,7 @@ void Yggdrasil::login(QString password) {
 
     QJsonDocument doc(req);
 
-    QUrl reqUrl("https://authserver.mojang.com/authenticate");
+    QUrl reqUrl(m_data->provider->authEndpoint() + "authenticate");
     QNetworkRequest netRequest(reqUrl);
     QByteArray requestData = doc.toJson();
 
@@ -208,6 +208,11 @@ void Yggdrasil::processResponse(QJsonObject responseData) {
     m_data->yggdrasilToken.token = accessToken;
     m_data->yggdrasilToken.validity = Katabasis::Validity::Certain;
     m_data->yggdrasilToken.issueInstant = QDateTime::currentDateTimeUtc();
+
+
+    if(responseData.contains("selectedProfile")) {
+        //m_data->minecraftProfile = responseData.value("selectedProfile").toObject();
+    }
 
     // We've made it through the minefield of possible errors. Return true to indicate that
     // we've succeeded.

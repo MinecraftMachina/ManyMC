@@ -28,6 +28,7 @@
 
 #include <QPainter>
 
+#include "AuthProviders.h"
 #include "flows/MSA.h"
 #include "flows/Mojang.h"
 
@@ -65,6 +66,7 @@ MinecraftAccountPtr MinecraftAccount::createBlankMSA()
 {
     MinecraftAccountPtr account(new MinecraftAccount());
     account->data.type = AccountType::MSA;
+    account->setProvider(AuthProviders::lookup("MSA"));
     return account;
 }
 

@@ -30,6 +30,8 @@
 #include "AccountData.h"
 #include "QObjectPtr.h"
 
+#include "providers/BaseAuthProvider.h"
+
 class Task;
 class AccountTask;
 class MinecraftAccount;
@@ -44,12 +46,13 @@ Q_DECLARE_METATYPE(MinecraftAccountPtr)
  * but we might as well add some things for it in MultiMC right now so
  * we don't have to rip the code to pieces to add it later.
  */
-struct AccountProfile
-{
-    QString id;
-    QString name;
-    bool legacy;
-};
+// Defined in providers/BaseAuthProvider.h
+//struct AccountProfile
+//{
+    //QString id;
+    //QString name;
+    //bool legacy;
+//};
 
 /**
  * Object that stores information about a certain Mojang account.
@@ -94,6 +97,15 @@ public: /* manipulation */
     shared_qobject_ptr<AccountTask> currentTask();
 
 public: /* queries */
+    bool setProvider(AuthProviderPtr provider) {
+        data.provider = provider;
+        return true;
+    }
+
+    AuthProviderPtr provider() {
+        return data.provider;
+    }
+
     QString internalId() const {
         return data.internalId;
     }
