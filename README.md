@@ -75,7 +75,7 @@ If you had trouble with this guide, check the following [unofficial video tutori
 ## Troubleshooting
 
 - Minecraft/MultiMC released an update, but I can't see it in ManyMC
-  - To force an update of the Minecraft metadata, [visit this link](https://pull.git.ci/process/MinecraftMachina/meta-multimc-arm64)
+  - Changes are pulled approximately every 2 hours. If after that long the update is still missing, raise an issue.
 - OptiFine doesn't work
   - To fix, install one of the two combinations below:
     - Forge + OptiFine
