@@ -79,7 +79,7 @@ If you had trouble with this guide, check the following [unofficial video tutori
 - OptiFine doesn't work
   - If you are using OptiFine `1.12.x` or older as a jar mod, try the other option(s)
   
-  - If you are using OptiFine `1.13.x` or newer as a jar mod, try this:
+  - If you are using OptiFine `1.17.x` or newer as a jar mod, try this:
   - Download OptiFine and extract it as a jar mod (into your `Downloads` folder for example.)
   - Then create a folder (we'll name it `OptiFine`) and put the extracted jar there. (it ends with "MOD")
   - Open a Terminal window.
