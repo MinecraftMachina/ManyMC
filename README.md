@@ -57,7 +57,7 @@ There are two ways to install ManyMC, please choose one:
 
 ### Manual
 
-1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk) or [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
+1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Adoptium Eclipe Temurin 17 aarch64](https://adoptium.net/temurin/releases) or [Zulu OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
 
 2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it. You can move the app to your "Applications" folder if you like.
 3. Start ManyMC. If it gives an error about "developer cannot be verified", one time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
@@ -77,6 +77,24 @@ If you had trouble with this guide, check the following [unofficial video tutori
 - Minecraft/MultiMC released an update, but I can't see it in ManyMC
   - Changes are pulled approximately every 2 hours. If after that long the update is still missing, raise an issue.
 - OptiFine doesn't work
+  - If you are using OptiFine `1.12.x` or older as a jar mod, try the other option(s)
+  
+  - If you are using OptiFine `1.13.x` or newer as a jar mod, try this:
+  - Download OptiFine and extract it as a jar mod (into your `Downloads` folder for example.)
+  - Then create a folder (we'll name it `OptiFine`) and put the extracted jar there. (it ends with "MOD")
+  - Open a Terminal window.
+  - Type `cd ~/Downloads/OptiFine/` (`cd /path/to/your/OptiFine/folder/`) and then press ENTER.
+  - Type `jar -xvf nameofyouroptifine.jar`
+  - Open the `OptiFine` folder and delete the extracted jar.
+  - Open the `notch` folder
+  - Move all the files contening this folder to the root of the `OptiFine` folder.
+  - Delete the `notch` folder.
+  - Reopen the Terminal window.
+  - Type `zip -r OptiFine.jar . -x ".*" -x "__MACOSX"`
+  - Open the `OptiFine` folder
+  - Grab the new `OptiFine.jar` and add it in the `Version` menu in the instance settings.
+  - Launch the game!
+ 
   - To fix, install one of the two combinations below:
     - Forge + OptiFine
     - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
@@ -107,7 +125,7 @@ This launcher is a fork of [MultiMC](https://github.com/MultiMC/Launcher), since
    brew install zulu8 qt@5 cmake
    ```
 
-2. Install XCode and make sure the command line tools are set up:
+2. Install Xcode and make sure the command line tools are set up:
 
    ```bash
    xcode-select -p
