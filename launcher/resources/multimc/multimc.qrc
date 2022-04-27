@@ -314,5 +314,7 @@
 
         <file>scalable/instances/fox.svg</file>
         <file>scalable/instances/bee.svg</file>
+
+        <file>scalable/instances/manymc.svg</file>
     </qresource>
 </RCC>
