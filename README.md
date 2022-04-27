@@ -45,7 +45,7 @@ There are two ways to install ManyMC, please choose one:
    | Minecraft Version  | Java Version | Architecture | Path                                                          |
    | -----------------| ------------ | ------------ | ------------------------------------------------------------  |
    | 1.16 and below    | 1.8.0_X   | aarch64      | /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin/java |
-   | 1.17 and above    | 17.X.X     | aarch64      | /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home/bin/java |
+   | 1.17 and above    | 17.X.X     | aarch64      | /Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/bin/java |
 
      > :information_source: NOTE: You can always change the Java version individually by selecting a Minecraft instance and clicking on `Edit instance > Settings > Java installation`.
 
@@ -57,7 +57,7 @@ There are two ways to install ManyMC, please choose one:
 
 ### Manual
 
-1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Adoptium Eclipe Temurin 17 aarch64](https://adoptium.net/temurin/releases) or [Zulu OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
+1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Adoptium Eclipe Temurin 17 aarch64](https://adoptium.net/download) or [Zulu OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
 
 2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it. You can move the app to your "Applications" folder if you like.
 3. Start ManyMC. If it gives an error about "developer cannot be verified", one time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
