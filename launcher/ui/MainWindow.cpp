@@ -470,8 +470,6 @@ public:
 
         mainToolBar->addSeparator();
 
-        mainToolBar->addAction(actionCAT);
-
         all_toolbars.append(&mainToolBar);
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
     }

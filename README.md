@@ -1,98 +1,123 @@
 <p align="center">
-  <img src="./program_info/polymc-header-black.svg#gh-light-mode-only" alt="PolyMC logo"/>
-  <img src="./program_info/polymc-header.svg#gh-dark-mode-only" alt="PolyMC logo"/>
+    <img width="256" heigth="256" src="wiki/logo.svg">
+    <h1 align="center">ManyMC</h1>
+    <p align="center">
+        A familiar Minecraft Launcher with native support for macOS arm64 (M1)
+    </p>
 </p>
-<br>
 
-PolyMC is a custom launcher for Minecraft that focuses on predictability, long term stability and simplicity.
+---
 
-This is a **fork** of the MultiMC Launcher and not endorsed by MultiMC.
-If you want to read about why this fork was created, check out [our FAQ page](https://polymc.org/wiki/overview/faq/).
-<br>
+> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC or PolyMC team. Only report issues with ManyMC here.
 
-# Installation
+---
 
-- All downloads and instructions for PolyMC can be found [here](https://polymc.org/download/)
-- Last build status: https://github.com/PolyMC/PolyMC/actions
+## Supported versions
 
+All stable versions of Minecraft from `1.6.4` to `1.18` have been tested and work great. [Fabric](https://fabricmc.net), [Forge](https://forums.minecraftforge.net), and [OptiFine](https://optifine.net/home) also work across all versions. Even huge modpacks like [All the Mods 6](https://www.curseforge.com/minecraft/modpacks/all-the-mods-6) run perfectly!
 
-## Development Builds
+## Community
 
-There are per-commit development builds available [here](https://github.com/PolyMC/PolyMC/actions). These have debug information in the binaries, so their file sizes are relatively larger.
-Portable builds are provided for AppImage on Linux, Windows, and macOS.
+You are welcome to join the official Discord where you can get faster support and discuss the future of ManyMC. Link is here: https://discord.gg/CcFxPaDnjv
 
-For Debian and Arch, you can use these packages for the latest development versions:  
-[![polymc-git](https://img.shields.io/badge/aur-polymc--git-blue)](https://aur.archlinux.org/packages/polymc-git/)
-[![polymc-git](https://img.shields.io/badge/mpr-polymc--git-orange)](https://mpr.makedeb.org/packages/polymc-git)  
-For flatpak, you can use [flathub-beta](https://discourse.flathub.org/t/how-to-use-flathub-beta/2111)
+## More fixes
 
-# Help & Support
+Can't sprint and attack at the same time? Or sneak and scroll? These are all old and unfixed Minecraft bugs on macOS. Get rid of them now using our mod [McMouser](https://github.com/MinecraftMachina/McMouser) ([CurseForge](https://www.curseforge.com/minecraft/mc-mods/mcmouser)).
 
-Feel free to create an issue if you need help. However, you might find it easier to ask in the Discord server.
+## Install
 
-[![PolyMC Discord](https://img.shields.io/discord/923671181020766230?label=PolyMC%20Discord)](https://discord.gg/xq7fxrgtMP)
+There are two ways to install ManyMC, please choose one:
 
-For people who don't want to use Discord, we have a Matrix Space which is bridged to the Discord server:
+### Homebrew *(recommended)*
 
-[![PolyMC Space](https://img.shields.io/matrix/polymc:matrix.org?label=PolyMC%20space)](https://matrix.to/#/#polymc:matrix.org)
+1. Install [brew](https://brew.sh) if you haven't already
 
-If there are any issues with the space or you are using a client that does not support the feature here are the individual rooms:
+2. In a Terminal, run the following commands one by one. This will install the correct versions of Java 8, Java 17, and ManyMC:
+   ```sh
+   brew tap homebrew/cask-versions
+   brew install zulu8 zulu17
+   brew install --no-quarantine ManyMC
+   ```
 
-[![Development](https://img.shields.io/matrix/polymc-development:matrix.org?label=PolyMC%20Development)](https://matrix.to/#/#polymc-development:matrix.org)
-[![Discussion](https://img.shields.io/matrix/polymc-discussion:matrix.org?label=PolyMC%20Discussion)](https://matrix.to/#/#polymc-discussion:matrix.org)
-[![Github](https://img.shields.io/matrix/polymc-github:matrix.org?label=PolyMC%20Github)](https://matrix.to/#/#polymc-github:matrix.org)
-[![Maintainers](https://img.shields.io/matrix/polymc-maintainers:matrix.org?label=PolyMC%20Maintainers)](https://matrix.to/#/#polymc-maintainers:matrix.org)
-[![News](https://img.shields.io/matrix/polymc-news:matrix.org?label=PolyMC%20News)](https://matrix.to/#/#polymc-news:matrix.org)
-[![Offtopic](https://img.shields.io/matrix/polymc-offtopic:matrix.org?label=PolyMC%20Offtopic)](https://matrix.to/#/#polymc-offtopic:matrix.org)
-[![Support](https://img.shields.io/matrix/polymc-support:matrix.org?label=PolyMC%20Support)](https://matrix.to/#/#polymc-support:matrix.org)
-[![Voice](https://img.shields.io/matrix/polymc-voice:matrix.org?label=PolyMC%20Voice)](https://matrix.to/#/#polymc-voice:matrix.org)
+3. Run ManyMC as normal (it's in `/Applications/ManyMC`)
+4. Depending on which version of Minecraft you want to play, you will need to use a different version of Java. Use the table below to find the correct Java path for your Minecraft version, and select it when ManyMC prompts you:
 
-We also have a subreddit you can post your issues and suggestions on:
+   | Minecraft Version  | Java Version | Architecture | Path                                                          |
+   | -----------------| ------------ | ------------ | ------------------------------------------------------------  |
+   | 1.16 and below    | 1.8.0_X   | aarch64      | /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin/java |
+   | 1.17 and above    | 17.X.X     | aarch64      | /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home/bin/java |
 
-[r/PolyMCLauncher](https://www.reddit.com/r/PolyMCLauncher/)
+     > :information_source: NOTE: You can always change the Java version individually by selecting a Minecraft instance and clicking on `Edit instance > Settings > Java installation`.
 
-# Development
+5. To update ManyMC in the future, simply run the following command in a Terminal, your data will not be affected:
 
-If you want to contribute to PolyMC you might find it useful to join our Discord Server or Matrix Space.
+    ```sh
+    brew upgrade --no-quarantine ManyMC
+    ```
+
+### Manual
+
+1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk) or [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
+
+2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it. You can move the app to your "Applications" folder if you like.
+3. Start ManyMC. If it gives an error about "developer cannot be verified", one time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
+
+4. As you go through the initial setup, make sure to select the correct `arm64` native Java for the version of Minecraft you want to play. For example, for Minecraft 1.17, you will need Java 17, like so:
+
+   ![](wiki/pic1.png)
+   
+   > :information_source: NOTE: You can always change the Java version individually by selecting a Minecraft instance and clicking on `Edit instance > Settings > Java installation`.
+
+5. To update ManyMC in the future, simply delete the app and replace it with the new version from this GitHub page. Your data will not be affected.
+
+If you had trouble with this guide, check the following [unofficial video tutorial](https://www.youtube.com/watch?v=At5nF5i8oTg) or reach out on Discord for help.
+
+## Troubleshooting
+
+- Minecraft/MultiMC released an update, but I can't see it in ManyMC
+  - Changes are pulled approximately every 2 hours. If after that long the update is still missing, raise an issue.
+- OptiFine doesn't work
+  - To fix, install one of the two combinations below:
+    - Forge + OptiFine
+    - Fabric + [OptiFabric](https://www.curseforge.com/minecraft/mc-mods/optifabric) + OptiFine
+  - Use the latest **preview** version of OptiFine
+- Minecraft `1.16 and before` crash on boot
+  - Make sure you have installed and selected Java 8 in ManyMC, not a newer version. Read the installation section for more information.
+- Forge/modpack for Minecraft `1.16 and before` crashes on boot
+  - Either update Forge to the latest version, or downgrade Java to build 320 or before
+- Minecraft `1.5.2 and before` has inverted colors and stuttering
+  - On Minecraft 1.4.7-1.5.2, enable Fullscreen mode from the game's `Options` > `Video Settings`.
+  - On older versions, press F11 to enable fullscreen.
+    - You may have to press Fn+F11 or rebind your Show Desktop keybind in `System Preferences` > `Mission Control` > `Show Desktop` for F11 to be sent to Minecraft
+
+## How does it work
+
+Minecraft is mostly written in Java, which means that as long as you have a native arm64 Java installed, you can almost run the game natively. The only exception are some libraries like LWJGL, which have platform-specific binaries. Fortunately, all of them are open-source, so they can be re-built to work.
+
+This launcher is a fork of [MultiMC](https://github.com/MultiMC/Launcher), since the latter's development team is not willing to natively support arm64. To comply with MultiMC's licensing, this launcher was rebranded to ManyMC. To use the custom native libraries, a dedicated [meta package](https://github.com/MinecraftMachina/meta-multimc-arm64/) has been created.
 
 ## Building
 
-If you want to build PolyMC yourself, check [Build Instructions](https://polymc.org/wiki/development/build-instructions/) for build instructions.
+> ⚠️ This will only work on macOS. Tested on macOS 12.1 arm64.
 
-## Code formatting
+1. Install dependencies:
 
-Just follow the existing formatting.
+   ```bash
+   brew tap homebrew/cask-versions
+   brew install zulu8 qt@5 cmake
+   ```
 
-In general, in order of importance:
+2. Install XCode and make sure the command line tools are set up:
 
-- Make sure your IDE is not messing up line endings or whitespace and avoid using linters.
-- Prefer readability over dogma.
-- Keep to the existing formatting.
-- Indent with 4 space unless it's in a submodule.
-- Keep lists (of arguments, parameters, initializers...) as lists, not paragraphs. It should either read from top to bottom, or left to right. Not both.
+   ```bash
+   xcode-select -p
+   ```
 
-## Translations
+3. Run a build:
 
-The translation effort for PolyMC is hosted on [Weblate](https://hosted.weblate.org/projects/polymc/polymc/) and information about translating PolyMC is available at https://github.com/PolyMC/Translations
+   ```bash
+   ./build.sh
+   ```
 
-## Download information
-To modify download information or change packaging information send a pull request or issue to the website [Here](https://github.com/PolyMC/polymc.github.io/blob/master/src/download.md)
-
-## Forking/Redistributing/Custom builds policy
-
-We don't care what you do with your fork/custom build as long as you do the following as a basic courtesy:
-- Follow the terms of the [license](LICENSE) (not just a courtesy, but also a legal responsibility)
-- Make it clear that your fork is not PolyMC and is not endorsed by or affiliated with the PolyMC project (https://polymc.org).
-- Go through [CMakeLists.txt](CMakeLists.txt) and change PolyMC's API keys to your own or set them to empty strings (`""`) to disable them (this way the program will still compile but the functionality requiring those keys will be disabled).
-
-If you have any questions or want any clarification on the above conditions please make an issue and ask us.
-
-Be aware that if you build this software without removing the provided API keys in [CMakeLists.txt](CMakeLists.txt) you are accepting the following terms and conditions:
- - [Microsoft Identity Platform Terms of Use](https://docs.microsoft.com/en-us/legal/microsoft-identity-platform/terms-of-use)
- - [CurseForge 3rd Party API Terms and Conditions](https://support.curseforge.com/en/support/solutions/articles/9000207405-curse-forge-3rd-party-api-terms-and-conditions)
-
-If you do not agree with these terms and conditions, then remove the associated API keys from the [CMakeLists.txt](CMakeLists.txt) file by setting them to an empty string (`""`).
-
-All launcher code is available under the GPL-3.0-only license.
-  
-The logo and related assets are under the CC BY-SA 4.0 license.
+   - You will need your own secrets if you want login with Microsoft account to work. Copy [notsecrets](notsecrets) to a new directory called `secrets` and follow the README inside.
+   - If you get weird Java errors, you may have to manually set your `JAVA_HOME` to the zulu8 you just installed.

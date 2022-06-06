@@ -20,6 +20,7 @@ Debug
 
 # Build dirs
 build
+dist
 /build-*
 
 # Install dirs

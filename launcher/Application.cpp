@@ -358,7 +358,7 @@ Application::Application(int &argc, char **argv) : QApplication(argc, argv)
 #ifdef Q_OS_LINUX
         // TODO: this should be removed in a future version
         // TODO: provide a migration path similar to macOS migration
-        QDir bar(FS::PathCombine(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation), "polymc"));
+        QDir bar(FS::PathCombine(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation), "manymc"));
         if (bar.exists()) {
             dataPath = bar.absolutePath();
             adjustedBy = "Legacy data path";
@@ -551,7 +551,7 @@ Application::Application(int &argc, char **argv) : QApplication(argc, argv)
         m_settings->registerSetting("AutoUpdate", true);
 
         // Theming
-        m_settings->registerSetting("IconTheme", QString("pe_colored"));
+        m_settings->registerSetting("IconTheme", QString("multimc"));
         m_settings->registerSetting("ApplicationTheme", QString("system"));
 
         // Remembered state
@@ -1164,7 +1164,7 @@ void Application::setIconTheme(const QString& name)
 QIcon Application::getThemedIcon(const QString& name)
 {
     if(name == "logo") {
-        return QIcon(":/org.polymc.PolyMC.svg");
+        return QIcon(":/logo.svg");
     }
     return XdgIcon::fromTheme(name);
 }

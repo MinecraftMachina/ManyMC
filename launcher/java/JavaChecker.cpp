@@ -129,10 +129,10 @@ void JavaChecker::finished(int exitcode, QProcess::ExitStatus status)
     auto os_arch = results["os.arch"];
     auto java_version = results["java.version"];
     auto java_vendor = results["java.vendor"];
-    bool is_64 = os_arch == "x86_64" || os_arch == "amd64" || os_arch == "aarch64" || os_arch == "arm64";
+    bool is_arm64 = os_arch == "arm64" || os_arch == "aarch64";
+    bool is_64 = os_arch == "x86_64" || os_arch == "amd64" || is_arm64;
 
-
-    result.validity = JavaCheckResult::Validity::Valid;
+    result.validity = is_arm64 ? JavaCheckResult::Validity::Valid : JavaCheckResult::Validity::Errored;
     result.is_64bit = is_64;
     result.mojangPlatform = is_64 ? "64" : "32";
     result.realPlatform = os_arch;
