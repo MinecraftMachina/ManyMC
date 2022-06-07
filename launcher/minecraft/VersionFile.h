@@ -1,3 +1,38 @@
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (C) 2022 Sefa Eyeoglu <contact@scrumplex.net>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #pragma once
 
 #include <QString>
@@ -10,6 +45,7 @@
 #include "minecraft/Rule.h"
 #include "ProblemProvider.h"
 #include "Library.h"
+#include "Agent.h"
 #include <meta/JsonFormat.h>
 
 class PackProfile;
@@ -27,19 +63,19 @@ public: /* methods */
     void applyTo(LaunchProfile* profile);
 
 public: /* data */
-    /// MultiMC: order hint for this version file if no explicit order is set
+    /// PolyMC: order hint for this version file if no explicit order is set
     int order = 0;
 
-    /// MultiMC: human readable name of this package
+    /// PolyMC: human readable name of this package
     QString name;
 
-    /// MultiMC: package ID of this package
+    /// PolyMC: package ID of this package
     QString uid;
 
-    /// MultiMC: version of this package
+    /// PolyMC: version of this package
     QString version;
 
-    /// MultiMC: DEPRECATED dependency on a Minecraft version
+    /// PolyMC: DEPRECATED dependency on a Minecraft version
     QString dependsOnMinecraftVersion;
 
     /// Mojang: DEPRECATED used to version the Mojang version format
@@ -51,11 +87,17 @@ public: /* data */
     /// Mojang: class to launch Minecraft with
     QString mainClass;
 
-    /// MultiMC: class to launch legacy Minecraft with (embed in a custom window)
+    /// PolyMC: class to launch legacy Minecraft with (embed in a custom window)
     QString appletClass;
 
     /// Mojang: Minecraft launch arguments (may contain placeholders for variable substitution)
     QString minecraftArguments;
+
+    /// PolyMC: Additional JVM launch arguments
+    QStringList addnJvmArguments;
+
+    /// Mojang: list of compatible java majors
+    QList<int> compatibleJavaMajors;
 
     /// Mojang: type of the Minecraft version
     QString type;
@@ -69,35 +111,38 @@ public: /* data */
     /// Mojang: DEPRECATED asset group to be used with Minecraft
     QString assets;
 
-    /// MultiMC: list of tweaker mod arguments for launchwrapper
+    /// PolyMC: list of tweaker mod arguments for launchwrapper
     QStringList addTweakers;
 
     /// Mojang: list of libraries to add to the version
     QList<LibraryPtr> libraries;
 
-    /// MultiMC: list of maven files to put in the libraries folder, but not in classpath
+    /// PolyMC: list of maven files to put in the libraries folder, but not in classpath
     QList<LibraryPtr> mavenFiles;
+
+    /// PolyMC: list of agents to add to JVM arguments
+    QList<AgentPtr> agents;
 
     /// The main jar (Minecraft version library, normally)
     LibraryPtr mainJar;
 
-    /// MultiMC: list of attached traits of this version file - used to enable features
+    /// PolyMC: list of attached traits of this version file - used to enable features
     QSet<QString> traits;
 
-    /// MultiMC: list of jar mods added to this version
+    /// PolyMC: list of jar mods added to this version
     QList<LibraryPtr> jarMods;
 
-    /// MultiMC: list of mods added to this version
+    /// PolyMC: list of mods added to this version
     QList<LibraryPtr> mods;
 
     /**
-     * MultiMC: set of packages this depends on
+     * PolyMC: set of packages this depends on
      * NOTE: this is shared with the meta format!!!
      */
     Meta::RequireSet requires;
 
     /**
-     * MultiMC: set of packages this conflicts with
+     * PolyMC: set of packages this conflicts with
      * NOTE: this is shared with the meta format!!!
      */
     Meta::RequireSet conflicts;
@@ -112,3 +157,4 @@ public:
     // Mojang: extended asset index download information
     std::shared_ptr<MojangAssetIndexInfo> mojangAssetIndex;
 };
+

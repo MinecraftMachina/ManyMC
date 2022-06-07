@@ -1,18 +1,38 @@
-/* Copyright 2013-2021 MultiMC Contributors
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (C) 2022 Sefa Eyeoglu <contact@scrumplex.net>
  *
- * Authors: Orochimarufan <orochimarufan.x3@gmail.com>
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Authors: Orochimarufan <orochimarufan.x3@gmail.com>
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
  */
 
 #include "MinecraftAccount.h"
@@ -30,6 +50,7 @@
 
 #include "flows/MSA.h"
 #include "flows/Mojang.h"
+#include "flows/Offline.h"
 
 MinecraftAccount::MinecraftAccount(QObject* parent) : QObject(parent) {
     data.internalId = QUuid::createUuid().toString().remove(QRegExp("[{}-]"));
@@ -65,6 +86,23 @@ MinecraftAccountPtr MinecraftAccount::createBlankMSA()
 {
     MinecraftAccountPtr account(new MinecraftAccount());
     account->data.type = AccountType::MSA;
+    return account;
+}
+
+MinecraftAccountPtr MinecraftAccount::createOffline(const QString &username)
+{
+    MinecraftAccountPtr account = new MinecraftAccount();
+    account->data.type = AccountType::Offline;
+    account->data.yggdrasilToken.token = "offline";
+    account->data.yggdrasilToken.validity = Katabasis::Validity::Certain;
+    account->data.yggdrasilToken.issueInstant = QDateTime::currentDateTimeUtc();
+    account->data.yggdrasilToken.extra["userName"] = username;
+    account->data.yggdrasilToken.extra["clientToken"] = QUuid::createUuid().toString().remove(QRegExp("[{}-]"));
+    account->data.minecraftEntitlement.ownsMinecraft = true;
+    account->data.minecraftEntitlement.canPlayMinecraft = true;
+    account->data.minecraftProfile.id = QUuid::createUuid().toString().remove(QRegExp("[{}-]"));
+    account->data.minecraftProfile.name = username;
+    account->data.minecraftProfile.validity = Katabasis::Validity::Certain;
     return account;
 }
 
@@ -111,6 +149,16 @@ shared_qobject_ptr<AccountTask> MinecraftAccount::loginMSA() {
     return m_currentTask;
 }
 
+shared_qobject_ptr<AccountTask> MinecraftAccount::loginOffline() {
+    Q_ASSERT(m_currentTask.get() == nullptr);
+
+    m_currentTask.reset(new OfflineLogin(&data));
+    connect(m_currentTask.get(), SIGNAL(succeeded()), SLOT(authSucceeded()));
+    connect(m_currentTask.get(), SIGNAL(failed(QString)), SLOT(authFailed(QString)));
+    emit activityChanged(true);
+    return m_currentTask;
+}
+
 shared_qobject_ptr<AccountTask> MinecraftAccount::refresh() {
     if(m_currentTask) {
         return m_currentTask;
@@ -118,6 +166,9 @@ shared_qobject_ptr<AccountTask> MinecraftAccount::refresh() {
 
     if(data.type == AccountType::MSA) {
         m_currentTask.reset(new MSASilent(&data));
+    }
+    else if(data.type == AccountType::Offline) {
+        m_currentTask.reset(new OfflineRefresh(&data));
     }
     else {
         m_currentTask.reset(new MojangRefresh(&data));
@@ -145,7 +196,9 @@ void MinecraftAccount::authFailed(QString reason)
 {
     switch (m_currentTask->taskState()) {
         case AccountTaskState::STATE_OFFLINE:
-        case AccountTaskState::STATE_FAILED_MUST_MIGRATE:
+        case AccountTaskState::STATE_DISABLED: {
+            // NOTE: user will need to fix this themselves.
+        }
         case AccountTaskState::STATE_FAILED_SOFT: {
             // NOTE: this doesn't do much. There was an error of some sort.
         }

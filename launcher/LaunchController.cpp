@@ -1,3 +1,38 @@
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (C) 2022 Sefa Eyeoglu <contact@scrumplex.net>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #include "LaunchController.h"
 #include "minecraft/auth/AccountList.h"
 #include "Application.h"
@@ -58,8 +93,8 @@ void LaunchController::decideAccount()
         auto reply = CustomMessageBox::selectable(
             m_parentWidget,
             tr("No Accounts"),
-            tr("In order to play Minecraft, you must have at least one Mojang or Minecraft "
-               "account logged in."
+            tr("In order to play Minecraft, you must have at least one Mojang or Microsoft "
+               "account logged in. "
                "Would you like to open the account manager to add an account now?"),
             QMessageBox::Information,
             QMessageBox::Yes | QMessageBox::No
@@ -69,6 +104,11 @@ void LaunchController::decideAccount()
         {
             // Open the account manager.
             APPLICATION->ShowGlobalSettings(m_parentWidget, "accounts");
+        }
+        else if (reply == QMessageBox::No)
+        {
+            // Do not open "profile select" dialog.
+            return;
         }
     }
 
@@ -118,6 +158,12 @@ void LaunchController::login() {
         m_session = std::make_shared<AuthSession>();
         m_session->wants_online = m_online;
         m_accountToUse->fillSession(m_session);
+
+        // Launch immediately in true offline mode
+        if(m_accountToUse->isOffline()) {
+            launchInstance();
+            return;
+        }
 
         switch(m_accountToUse->accountState()) {
             case AccountState::Offline: {
@@ -227,23 +273,23 @@ void LaunchController::login() {
                 emitFailed(errorString);
                 return;
             }
+            case AccountState::Disabled: {
+                auto errorString = tr("The launcher's client identification has changed. Please remove this account and add it again.");
+                QMessageBox::warning(
+                        m_parentWidget,
+                        tr("Client identification changed"),
+                        errorString,
+                        QMessageBox::StandardButton::Ok,
+                        QMessageBox::StandardButton::Ok
+                );
+                emitFailed(errorString);
+                return;
+            }
             case AccountState::Gone: {
                 auto errorString = tr("The account no longer exists on the servers. It may have been migrated, in which case please add the new account you migrated this one to.");
                 QMessageBox::warning(
                     m_parentWidget,
                     tr("Account gone"),
-                    errorString,
-                    QMessageBox::StandardButton::Ok,
-                    QMessageBox::StandardButton::Ok
-                );
-                emitFailed(errorString);
-                return;
-            }
-            case AccountState::MustMigrate: {
-                auto errorString = tr("The account must be migrated to a Microsoft account.");
-                QMessageBox::warning(
-                    m_parentWidget,
-                    tr("Account requires migration"),
                     errorString,
                     QMessageBox::StandardButton::Ok,
                     QMessageBox::StandardButton::Ok

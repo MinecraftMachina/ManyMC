@@ -4,16 +4,11 @@
     <p align="center">
         A familiar Minecraft Launcher with native support for macOS arm64 (M1)
     </p>
-    <p align="center">
-        <img alt="GitHub issues" src="https://img.shields.io/github/issues/MinecraftMachina/ManyMC">
-        <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/MinecraftMachina/ManyMC/total">
-        <img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/MinecraftMachina/ManyMC">
-    </p>
 </p>
 
 ---
 
-> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC team. Only report issues with ManyMC here.
+> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC or PolyMC team. Only report issues with ManyMC here.
 
 ---
 

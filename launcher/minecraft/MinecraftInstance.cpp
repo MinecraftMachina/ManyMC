@@ -1,4 +1,41 @@
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (C) 2022 Sefa Eyeoglu <contact@scrumplex.net>
+ *  Copyright (C) 2022 Jamie Mansfield <jmansfield@cadixdev.org>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #include "MinecraftInstance.h"
+#include "BuildConfig.h"
 #include "minecraft/launch/CreateGameFolders.h"
 #include "minecraft/launch/ExtractNatives.h"
 #include "minecraft/launch/PrintInstanceInfo.h"
@@ -20,6 +57,7 @@
 #include "launch/steps/PreLaunchCommand.h"
 #include "launch/steps/TextPrint.h"
 #include "launch/steps/CheckJava.h"
+#include "launch/steps/QuitAfterGameStop.h"
 
 #include "minecraft/launch/LauncherPartLaunch.h"
 #include "minecraft/launch/DirectJavaLaunch.h"
@@ -88,6 +126,7 @@ MinecraftInstance::MinecraftInstance(SettingsObjectPtr globalSettings, SettingsO
 
     m_settings->registerOverride(globalSettings->getSetting("JavaPath"), javaOrLocation);
     m_settings->registerOverride(globalSettings->getSetting("JvmArgs"), javaOrArgs);
+    m_settings->registerOverride(globalSettings->getSetting("IgnoreJavaCompatibility"), javaOrLocation);
 
     // special!
     m_settings->registerPassthrough(globalSettings->getSetting("JavaTimestamp"), javaOrLocation);
@@ -124,18 +163,12 @@ MinecraftInstance::MinecraftInstance(SettingsObjectPtr globalSettings, SettingsO
     m_settings->registerSetting("JoinServerOnLaunch", false);
     m_settings->registerSetting("JoinServerOnLaunchAddress", "");
 
-    // DEPRECATED: Read what versions the user configuration thinks should be used
-    m_settings->registerSetting({"IntendedVersion", "MinecraftVersion"}, "");
-    m_settings->registerSetting("LWJGLVersion", "");
-    m_settings->registerSetting("ForgeVersion", "");
-    m_settings->registerSetting("LiteloaderVersion", "");
+    // Miscellaneous
+    auto miscellaneousOverride = m_settings->registerSetting("OverrideMiscellaneous", false);
+    m_settings->registerOverride(globalSettings->getSetting("CloseAfterLaunch"), miscellaneousOverride);
+    m_settings->registerOverride(globalSettings->getSetting("QuitAfterGameStop"), miscellaneousOverride);
 
     m_components.reset(new PackProfile(this));
-    m_components->setOldConfigVersion("net.minecraft", m_settings->get("IntendedVersion").toString());
-    auto setting = m_settings->getSetting("LWJGLVersion");
-    m_components->setOldConfigVersion("org.lwjgl", m_settings->get("LWJGLVersion").toString());
-    m_components->setOldConfigVersion("net.minecraftforge", m_settings->get("ForgeVersion").toString());
-    m_components->setOldConfigVersion("com.mumfrey.liteloader", m_settings->get("LiteloaderVersion").toString());
 }
 
 void MinecraftInstance::saveNow()
@@ -303,6 +336,17 @@ QStringList MinecraftInstance::extraArguments() const
         list.append({"-Dfml.ignoreInvalidMinecraftCertificates=true",
                      "-Dfml.ignorePatchDiscrepancies=true"});
     }
+    auto addn = m_components->getProfile()->getAddnJvmArguments();
+    if (!addn.isEmpty()) {
+        list.append(addn);
+    }
+    auto agents = m_components->getProfile()->getAgents();
+    for (auto agent : agents)
+    {
+        QStringList jar, temp1, temp2, temp3;
+        agent->library()->getApplicableFiles(currentSystem, jar, temp1, temp2, temp3, getLocalLibraryPath());
+        list.append("-javaagent:"+jar[0]+(agent->argument().isEmpty() ? "" : "="+agent->argument()));
+    }
     return list;
 }
 
@@ -444,9 +488,8 @@ QStringList MinecraftInstance::processMinecraftArgs(
         }
     }
 
-    // blatant self-promotion.
-    token_mapping["profile_name"] = token_mapping["version_name"] = "MultiMC5";
-
+    token_mapping["profile_name"] = name();
+    token_mapping["version_name"] = profile->getMinecraftVersion();
     token_mapping["version_type"] = profile->getMinecraftVersionType();
 
     QString absRootDir = QDir(gameRoot()).absolutePath();
@@ -616,23 +659,23 @@ QStringList MinecraftInstance::verboseDescription(AuthSessionPtr session, Minecr
             out << QString("%1:").arg(label);
             auto modList = model.allMods();
             std::sort(modList.begin(), modList.end(), [](Mod &a, Mod &b) {
-                auto aName = a.filename().completeBaseName();
-                auto bName = b.filename().completeBaseName();
+                auto aName = a.fileinfo().completeBaseName();
+                auto bName = b.fileinfo().completeBaseName();
                 return aName.localeAwareCompare(bName) < 0;
             });
             for(auto & mod: modList)
             {
                 if(mod.type() == Mod::MOD_FOLDER)
                 {
-                    out << u8"  [📁] " + mod.filename().completeBaseName() + " (folder)";
+                    out << u8"  [📁] " + mod.fileinfo().completeBaseName() + " (folder)";
                     continue;
                 }
 
                 if(mod.enabled()) {
-                    out << u8"  [✔️] " + mod.filename().completeBaseName();
+                    out << u8"  [✔️] " + mod.fileinfo().completeBaseName();
                 }
                 else {
-                    out << u8"  [❌] " + mod.filename().completeBaseName() + " (disabled)";
+                    out << u8"  [❌] " + mod.fileinfo().completeBaseName() + " (disabled)";
                 }
 
             }
@@ -945,6 +988,11 @@ shared_qobject_ptr<LaunchTask> MinecraftInstance::createLaunchTask(AuthSessionPt
     if (session)
     {
         process->setCensorFilter(createCensorFilterFromSession(session));
+    }
+    if(m_settings->get("QuitAfterGameStop").toBool())
+    {
+        auto step = new QuitAfterGameStop(pptr);
+        process->appendStep(step);
     }
     m_launchProcess = process;
     emit launchTaskChanged(m_launchProcess);

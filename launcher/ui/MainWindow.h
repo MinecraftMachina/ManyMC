@@ -28,7 +28,6 @@
 
 class LaunchController;
 class NewsChecker;
-class NotificationChecker;
 class QToolButton;
 class InstanceProxyModel;
 class LabeledToolButton;
@@ -73,6 +72,8 @@ private slots:
 
     void on_actionREDDIT_triggered();
 
+    void on_actionMATRIX_triggered();
+
     void on_actionDISCORD_triggered();
 
     void on_actionCopyInstance_triggered();
@@ -109,7 +110,7 @@ private slots:
 
     void on_actionReportBug_triggered();
 
-    void on_actionPatreon_triggered();
+    void on_actionOpenWiki_triggered();
 
     void on_actionMoreNews_triggered();
 
@@ -150,6 +151,8 @@ private slots:
 
     void showInstanceContextMenu(const QPoint &);
 
+    void updateMainToolBar();
+
     void updateToolsMenu();
 
     void instanceActivated(QModelIndex);
@@ -168,8 +171,6 @@ private slots:
 
     void updateNotAvailable();
 
-    void notificationsChanged();
-
     void defaultAccountChanged();
 
     void changeActiveAccount();
@@ -186,6 +187,10 @@ private slots:
     void konamiTriggered();
 
     void globalSettingsClosed();
+
+#ifndef Q_OS_MAC
+    void keyReleaseEvent(QKeyEvent *event) override;
+#endif
 
 private:
     void retranslateUi();
@@ -215,7 +220,6 @@ private:
     KonamiCode * secretEventFilter = nullptr;
 
     unique_qobject_ptr<NewsChecker> m_newsChecker;
-    unique_qobject_ptr<NotificationChecker> m_notificationChecker;
 
     InstancePtr m_selectedInstance;
     QString m_currentInstIcon;
@@ -223,3 +227,4 @@ private:
     // managed by the application object
     Task *m_versionLoadTask = nullptr;
 };
+

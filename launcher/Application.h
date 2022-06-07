@@ -1,3 +1,38 @@
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (C) 2022 Sefa Eyeoglu <contact@scrumplex.net>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #pragma once
 
 #include <QApplication>
@@ -33,7 +68,6 @@ class BaseDetachedToolFactory;
 class TranslationsModel;
 class ITheme;
 class MCEditTool;
-class GAnalytics;
 
 namespace Meta {
     class Index;
@@ -60,10 +94,6 @@ public:
     Application(int &argc, char **argv);
     virtual ~Application();
 
-    GAnalytics *analytics() const {
-        return m_analytics;
-    }
-
     std::shared_ptr<SettingsObject> settings() const {
         return m_settings;
     }
@@ -73,6 +103,8 @@ public:
     }
 
     QIcon getThemedIcon(const QString& name);
+
+    bool isFlatpak();
 
     void setIconTheme(const QString& name);
 
@@ -104,8 +136,6 @@ public:
         return m_accounts;
     }
 
-    QString msaClientId() const;
-
     Status status() const {
         return m_status;
     }
@@ -123,6 +153,9 @@ public:
     shared_qobject_ptr<Meta::Index> metadataIndex();
 
     QString getJarsPath();
+
+    QString getMSAClientID();
+    QString getCurseKey();
 
     /// this is the root of the 'installation'. Used for automatic updates
     const QString &root() {
@@ -157,13 +190,13 @@ public slots:
         MinecraftAccountPtr accountToUse = nullptr
     );
     bool kill(InstancePtr instance);
+    void closeCurrentWindow();
 
 private slots:
     void on_windowClose();
     void messageReceived(const QByteArray & message);
     void controllerSucceeded();
     void controllerFailed(const QString & error);
-    void analyticsSettingChanged(const Setting &setting, QVariant value);
     void setupWizardFinished(int status);
 
 private:
@@ -228,7 +261,6 @@ private:
     // peer launcher instance connector - used to implement single instance launcher and signalling
     LocalPeer * m_peerInstance = nullptr;
 
-    GAnalytics * m_analytics = nullptr;
     SetupWizard * m_setupWizard = nullptr;
 public:
     QString m_instanceIdToLaunch;
@@ -238,3 +270,4 @@ public:
     QUrl m_zipToImport;
     std::unique_ptr<QFile> logFile;
 };
+

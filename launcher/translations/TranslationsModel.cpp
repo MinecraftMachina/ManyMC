@@ -1,3 +1,38 @@
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (c) 2022 flowln <flowlnlnln@gmail.com>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
+ */
+
 #include "TranslationsModel.h"
 
 #include <QCoreApplication>
@@ -143,6 +178,11 @@ struct TranslationsModel::Private
 
     std::unique_ptr<POTranslator> m_po_translator;
     QFileSystemWatcher *watcher;
+
+    const QString m_system_locale = QLocale::system().name();
+    const QString m_system_language = m_system_locale.split('_').front();
+
+    bool no_language_set = false;
 };
 
 TranslationsModel::TranslationsModel(QString path, QObject* parent): QAbstractListModel(parent)
@@ -164,7 +204,10 @@ TranslationsModel::~TranslationsModel()
 void TranslationsModel::translationDirChanged(const QString& path)
 {
     qDebug() << "Dir changed:" << path;
-    reloadLocalFiles();
+    if (!d->no_language_set)
+    {
+        reloadLocalFiles();
+    }
     selectLanguage(selectedLanguage());
 }
 
@@ -172,7 +215,26 @@ void TranslationsModel::indexReceived()
 {
     qDebug() << "Got translations index!";
     d->m_index_job.reset();
-    if(d->m_selectedLanguage != defaultLangCode)
+
+    if (d->no_language_set)
+    {
+        reloadLocalFiles();
+
+        auto language = d->m_system_locale;
+        if (!findLanguage(language))
+        {
+            language = d->m_system_language;
+        }
+        selectLanguage(language);
+        if (selectedLanguage() != defaultLangCode)
+        {
+            updateLanguage(selectedLanguage());
+        }
+        APPLICATION->settings()->set("Language", selectedLanguage());
+        d->no_language_set = false;
+    }
+
+    else if(d->m_selectedLanguage != defaultLangCode)
     {
         downloadTranslation(d->m_selectedLanguage);
     }
@@ -319,8 +381,19 @@ void TranslationsModel::reloadLocalFiles()
     {
         d->m_languages.append(language);
     }
-    std::sort(d->m_languages.begin(), d->m_languages.end(), [](const Language& a, const Language& b) {
-        return a.key.compare(b.key) < 0;
+    std::sort(d->m_languages.begin(), d->m_languages.end(), [this](const Language& a, const Language& b) {
+        if (a.key != b.key)
+        {
+            if (a.key == d->m_system_locale || a.key == d->m_system_language)
+            {
+                return true;
+            }
+            if (b.key == d->m_system_locale || b.key == d->m_system_language)
+            {
+                return false;
+            }
+        }
+        return a.key < b.key;
     });
     endInsertRows();
 }
@@ -439,6 +512,12 @@ bool TranslationsModel::selectLanguage(QString key)
 {
     QString &langCode = key;
     auto langPtr = findLanguage(key);
+
+    if (langCode.isEmpty())
+    {
+        d->no_language_set = true;
+    }
+
     if(!langPtr)
     {
         qWarning() << "Selected invalid language" << key << ", defaulting to" << defaultLangCode;
@@ -576,7 +655,7 @@ void TranslationsModel::downloadIndex()
     d->m_index_job = new NetJob("Translations Index", APPLICATION->network());
     MetaEntryPtr entry = APPLICATION->metacache()->resolveEntry("translations", "index_v2.json");
     entry->setStale(true);
-    d->m_index_task = Net::Download::makeCached(QUrl("https://files.multimc.org/translations/index_v2.json"), entry);
+    d->m_index_task = Net::Download::makeCached(QUrl(BuildConfig.TRANSLATIONS_BASE_URL + "index_v2.json"), entry);
     d->m_index_job->addNetAction(d->m_index_task);
     connect(d->m_index_job.get(), &NetJob::failed, this, &TranslationsModel::indexFailed);
     connect(d->m_index_job.get(), &NetJob::succeeded, this, &TranslationsModel::indexReceived);
@@ -623,7 +702,7 @@ void TranslationsModel::downloadTranslation(QString key)
     auto dl = Net::Download::makeCached(QUrl(BuildConfig.TRANSLATIONS_BASE_URL + lang->file_name), entry);
     auto rawHash = QByteArray::fromHex(lang->file_sha1.toLatin1());
     dl->addValidator(new Net::ChecksumValidator(QCryptographicHash::Sha1, rawHash));
-    dl->m_total_progress = lang->file_size;
+    dl->setProgress(dl->getProgress(), lang->file_size);
 
     d->m_dl_job = new NetJob("Translation for " + key, APPLICATION->network());
     d->m_dl_job->addNetAction(dl);

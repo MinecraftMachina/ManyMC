@@ -14,11 +14,13 @@ CMakeLists.txt.user.*
 /.project
 /.settings
 /.idea
+/.vscode
 cmake-build-*/
 Debug
 
 # Build dirs
 build
+dist
 /build-*
 
 # Install dirs
@@ -37,4 +39,12 @@ tags
 branding/
 secrets/
 run/
-dist/
+
+.cache/
+
+# Nix/NixOS
+result/
+
+# Flatpak
+.flatpak-builder
+flatbuild

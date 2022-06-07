@@ -80,8 +80,15 @@
       </font>
      </property>
      <property name="text">
-      <string notr="true">MultiMC 5</string>
+      <string notr="true">Launcher</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="versionLabel">
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -152,16 +159,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="versionLabel">
-         <property name="text">
-          <string>Version:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="platformLabel">
          <property name="text">
           <string>Platform:</string>
@@ -212,12 +209,9 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTextEdit" name="creditsText">
-         <property name="readOnly">
+        <widget class="QTextBrowser" name="creditsText">
+         <property name="openExternalLinks">
           <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::TextBrowserInteraction</set>
          </property>
         </widget>
        </item>
@@ -246,20 +240,6 @@
          </property>
          <property name="textInteractionFlags">
           <set>Qt::TextBrowserInteraction</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="forkingTab">
-      <attribute name="title">
-       <string>Forking/Redistribution</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QTextEdit" name="redistributionText">
-         <property name="textInteractionFlags">
-          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
          </property>
         </widget>
        </item>
@@ -307,7 +287,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>creditsText</tabstop>
   <tabstop>licenseText</tabstop>
-  <tabstop>redistributionText</tabstop>
   <tabstop>aboutQt</tabstop>
   <tabstop>closeButton</tabstop>
  </tabstops>

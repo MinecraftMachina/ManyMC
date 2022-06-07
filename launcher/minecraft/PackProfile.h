@@ -28,6 +28,7 @@
 #include "BaseVersion.h"
 #include "MojangDownloadInfo.h"
 #include "net/Mode.h"
+#include "modplatform/ModAPI.h"
 
 class MinecraftInstance;
 struct PackProfileData;
@@ -117,6 +118,8 @@ public:
     // todo(merged): is this the best approach
     void appendComponent(ComponentPtr component);
 
+    ModAPI::ModLoaderTypes getModLoaders();
+
 private:
     void scheduleSave();
     bool saveIsScheduled() const;
@@ -142,8 +145,6 @@ private:
     bool installJarMods_internal(QStringList filepaths);
     bool installCustomJar_internal(QString filepath);
     bool removeComponent_internal(ComponentPtr patch);
-
-    bool migratePreComponentConfig();
 
 private: /* data */
 

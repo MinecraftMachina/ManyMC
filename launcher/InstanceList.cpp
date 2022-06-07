@@ -32,12 +32,15 @@
 #include "BaseInstance.h"
 #include "InstanceTask.h"
 #include "settings/INISettingsObject.h"
-#include "minecraft/legacy/LegacyInstance.h"
 #include "NullInstance.h"
 #include "minecraft/MinecraftInstance.h"
 #include "FileSystem.h"
 #include "ExponentialSeries.h"
 #include "WatchLock.h"
+
+#ifdef Q_OS_WIN32
+#include <Windows.h>
+#endif
 
 const static int GROUP_FILE_FORMAT_VERSION = 1;
 
@@ -544,23 +547,8 @@ InstancePtr InstanceList::loadInstance(const InstanceId& id)
     auto instanceRoot = FS::PathCombine(m_instDir, id);
     auto instanceSettings = std::make_shared<INISettingsObject>(FS::PathCombine(instanceRoot, "instance.cfg"));
     InstancePtr inst;
-
-    instanceSettings->registerSetting("InstanceType", "Legacy");
-
-    QString inst_type = instanceSettings->get("InstanceType").toString();
-
-    if (inst_type == "OneSix" || inst_type == "Nostalgia")
-    {
-        inst.reset(new MinecraftInstance(m_globalSettings, instanceSettings, instanceRoot));
-    }
-    else if (inst_type == "Legacy")
-    {
-        inst.reset(new LegacyInstance(m_globalSettings, instanceSettings, instanceRoot));
-    }
-    else
-    {
-        inst.reset(new NullInstance(m_globalSettings, instanceSettings, instanceRoot));
-    }
+    // TODO: Handle incompatible instances
+    inst.reset(new MinecraftInstance(m_globalSettings, instanceSettings, instanceRoot));
     qDebug() << "Loaded instance " << inst->name() << " from " << inst->instanceRoot();
     return inst;
 }
@@ -867,13 +855,18 @@ Task * InstanceList::wrapInstanceTask(InstanceTask * task)
 QString InstanceList::getStagedInstancePath()
 {
     QString key = QUuid::createUuid().toString();
-    QString relPath = FS::PathCombine("_LAUNCHER_TEMP/" , key);
+    QString tempDir = ".LAUNCHER_TEMP/";
+    QString relPath = FS::PathCombine(tempDir, key);
     QDir rootPath(m_instDir);
     auto path = FS::PathCombine(m_instDir, relPath);
     if(!rootPath.mkpath(relPath))
     {
         return QString();
     }
+#ifdef Q_OS_WIN32
+    auto tempPath = FS::PathCombine(m_instDir, tempDir);
+    SetFileAttributesA(tempPath.toStdString().c_str(), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_NOT_CONTENT_INDEXED);
+#endif
     return path;
 }
 

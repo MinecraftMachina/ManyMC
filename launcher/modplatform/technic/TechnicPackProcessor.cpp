@@ -19,9 +19,9 @@
 #include <Json.h>
 #include <minecraft/MinecraftInstance.h>
 #include <minecraft/PackProfile.h>
-#include <quazip.h>
-#include <quazipdir.h>
-#include <quazipfile.h>
+#include <quazip/quazip.h>
+#include <quazip/quazipdir.h>
+#include <quazip/quazipfile.h>
 #include <settings/INISettingsObject.h>
 
 #include <memory>
@@ -31,8 +31,6 @@ void Technic::TechnicPackProcessor::run(SettingsObjectPtr globalSettings, const 
     QString minecraftPath = FS::PathCombine(stagingPath, ".minecraft");
     QString configPath = FS::PathCombine(stagingPath, "instance.cfg");
     auto instanceSettings = std::make_shared<INISettingsObject>(configPath);
-    instanceSettings->registerSetting("InstanceType", "Legacy");
-    instanceSettings->set("InstanceType", "OneSix");
     MinecraftInstance instance(globalSettings, instanceSettings, stagingPath);
 
     instance.setName(instName);
@@ -90,7 +88,7 @@ void Technic::TechnicPackProcessor::run(SettingsObjectPtr globalSettings, const 
         else
         {
             if (minecraftVersion.isEmpty())
-                emit failed(tr("Could not find \"version.json\" inside \"bin/modpack.jar\", but minecraft version is unknown"));
+                emit failed(tr("Could not find \"version.json\" inside \"bin/modpack.jar\", but Minecraft version is unknown"));
             components->setComponentVersion("net.minecraft", minecraftVersion, true);
             components->installJarMods({modpackJar});
 
@@ -187,13 +185,22 @@ void Technic::TechnicPackProcessor::run(SettingsObjectPtr globalSettings, const 
                     components->setComponentVersion("net.minecraftforge", libraryName.section('-', 1, 1));
                 }
             }
-            else if (libraryName.startsWith("net.minecraftforge:minecraftforge:"))
+            else
             {
-                components->setComponentVersion("net.minecraftforge", libraryName.section(':', 2));
-            }
-            else if (libraryName.startsWith("net.fabricmc:fabric-loader:"))
-            {
-                components->setComponentVersion("net.fabricmc.fabric-loader", libraryName.section(':', 2));
+                static QStringList possibleLoaders{
+                        "net.minecraftforge:minecraftforge:",
+                        "net.fabricmc:fabric-loader:",
+                        "org.quiltmc:quilt-loader:"
+                };
+                for (const auto& loader : possibleLoaders)
+                {
+                    if (libraryName.startsWith(loader))
+                    {
+                        auto loaderComponent = loader.chopped(1).replace(":", ".");
+                        components->setComponentVersion(loaderComponent, libraryName.section(':', 2));
+                        break;
+                    }
+                }
             }
         }
     }

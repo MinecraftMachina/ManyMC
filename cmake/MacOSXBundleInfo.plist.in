@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>A Minecraft mod wants to access your camera.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>A Minecraft mod wants to access your microphone.</string>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>NSHighResolutionCapable</key>
@@ -36,9 +40,5 @@
     <true/>
     <key>NSHumanReadableCopyright</key>
     <string>${MACOSX_BUNDLE_COPYRIGHT}</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Need microphone access if you use any mods that require it</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Need camera access if you use any mods that require it</string>
 </dict>
 </plist>

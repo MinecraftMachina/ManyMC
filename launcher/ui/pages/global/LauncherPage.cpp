@@ -1,16 +1,37 @@
-/* Copyright 2013-2021 MultiMC Contributors
+// SPDX-License-Identifier: GPL-3.0-only
+/*
+ *  PolyMC - Minecraft Launcher
+ *  Copyright (c) 2022 Jamie Mansfield <jmansfield@cadixdev.org>
+ *  Copyright (c) 2022 dada513 <dada513@protonmail.com>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, version 3.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This file incorporates work covered by the following copyright and
+ * permission notice:
+ *
+ *      Copyright 2013-2021 MultiMC Contributors
+ *
+ *      Licensed under the Apache License, Version 2.0 (the "License");
+ *      you may not use this file except in compliance with the License.
+ *      You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *      Unless required by applicable law or agreed to in writing, software
+ *      distributed under the License is distributed on an "AS IS" BASIS,
+ *      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *      See the License for the specific language governing permissions and
+ *      limitations under the License.
  */
 
 #include "LauncherPage.h"
@@ -20,6 +41,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QTextCharFormat>
+#include <QMenuBar>
 
 #include "updater/UpdateChecker.h"
 
@@ -73,20 +95,8 @@ LauncherPage::LauncherPage(QWidget *parent) : QWidget(parent), ui(new Ui::Launch
     {
         ui->updateSettingsBox->setHidden(true);
     }
-    // Analytics
-    if(BuildConfig.ANALYTICS_ID.isEmpty())
-    {
-        ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->analyticsTab));
-    }
     connect(ui->fontSizeBox, SIGNAL(valueChanged(int)), SLOT(refreshFontPreview()));
     connect(ui->consoleFont, SIGNAL(currentFontChanged(QFont)), SLOT(refreshFontPreview()));
-
-    //move mac data button
-    QFile file(QDir::current().absolutePath() + "/dontmovemacdata");
-    if (!file.exists())
-    {
-        ui->migrateDataFolderMacBtn->setVisible(false);
-    }
 }
 
 LauncherPage::~LauncherPage()
@@ -119,13 +129,31 @@ void LauncherPage::on_instDirBrowseBtn_clicked()
             warning.setInformativeText(
                 tr("Do you really want to use this path? "
                    "Selecting \"No\" will close this and not alter your instance path."));
-            warning.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            warning.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
             int result = warning.exec();
-            if (result == QMessageBox::Yes)
+            if (result == QMessageBox::Ok)
             {
                 ui->instDirTextBox->setText(cooked_dir);
             }
         }
+        else if(APPLICATION->isFlatpak() && raw_dir.startsWith("/run/user"))
+        {
+            QMessageBox warning;
+            warning.setText(tr("You're trying to specify an instance folder "
+                            "which was granted temporaily via Flatpak.\n"
+                            "This is known to cause problems. "
+                            "After a restart the launcher might break, "
+                            "because it will no longer have access to that directory.\n\n"
+                            "Granting PolyMC access to it via Flatseal is recommended."));
+            warning.setInformativeText(
+             tr("Do you want to proceed anyway?"));
+            warning.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            int result = warning.exec();
+            if (result == QMessageBox::Ok)
+            {
+                ui->instDirTextBox->setText(cooked_dir);
+            } 
+        } 
         else
         {
             ui->instDirTextBox->setText(cooked_dir);
@@ -155,12 +183,10 @@ void LauncherPage::on_modsDirBrowseBtn_clicked()
         ui->modsDirTextBox->setText(cooked_dir);
     }
 }
-void LauncherPage::on_migrateDataFolderMacBtn_clicked()
+
+void LauncherPage::on_metadataDisableBtn_clicked()
 {
-    QFile file(QDir::current().absolutePath() + "/dontmovemacdata");
-    file.remove();
-    QProcess::startDetached(qApp->arguments()[0]);
-    qApp->quit();
+    ui->metadataWarningLabel->setHidden(!ui->metadataDisableBtn->isChecked());
 }
 
 void LauncherPage::refreshUpdateChannelList()
@@ -239,11 +265,6 @@ void LauncherPage::applySettings()
 {
     auto s = APPLICATION->settings();
 
-    if (ui->resetNotificationsBtn->isChecked())
-    {
-        s->set("ShownNotifications", QString());
-    }
-
     // Updates
     s->set("AutoUpdate", ui->autoUpdateCheckBox->isChecked());
     s->set("UpdateChannel", m_currentUpdateChannel);
@@ -251,33 +272,32 @@ void LauncherPage::applySettings()
     //FIXME: make generic
     switch (ui->themeComboBox->currentIndex())
     {
+    case 0:
+        s->set("IconTheme", "pe_colored");
+        break;
     case 1:
-        s->set("IconTheme", "pe_dark");
+        s->set("IconTheme", "pe_light");
         break;
     case 2:
-        s->set("IconTheme", "pe_light");
+        s->set("IconTheme", "pe_dark");
         break;
     case 3:
         s->set("IconTheme", "pe_blue");
         break;
     case 4:
-        s->set("IconTheme", "pe_colored");
-        break;
-    case 5:
         s->set("IconTheme", "OSX");
         break;
-    case 6:
+    case 5:
         s->set("IconTheme", "iOS");
         break;
-    case 7:
+    case 6:
         s->set("IconTheme", "flat");
+        break;
+    case 7:
+        s->set("IconTheme", "multimc");
         break;
     case 8:
         s->set("IconTheme", "custom");
-        break;
-    case 0:
-    default:
-        s->set("IconTheme", "multimc");
         break;
     }
 
@@ -293,6 +313,8 @@ void LauncherPage::applySettings()
         s->set("ApplicationTheme", newAppTheme);
         APPLICATION->setApplicationTheme(newAppTheme, false);
     }
+
+    s->set("MenuBarInsteadOfToolBar", ui->preferMenuBarCheckBox->isChecked());
 
     // Console settings
     s->set("ShowConsole", ui->showConsoleCheck->isChecked());
@@ -322,11 +344,8 @@ void LauncherPage::applySettings()
         break;
     }
 
-    // Analytics
-    if(!BuildConfig.ANALYTICS_ID.isEmpty())
-    {
-        s->set("Analytics", ui->analyticsCheck->isChecked());
-    }
+    // Mods
+    s->set("ModMetadataDisabled", ui->metadataDisableBtn->isChecked());
 }
 void LauncherPage::loadSettings()
 {
@@ -336,11 +355,15 @@ void LauncherPage::loadSettings()
     m_currentUpdateChannel = s->get("UpdateChannel").toString();
     //FIXME: make generic
     auto theme = s->get("IconTheme").toString();
-    if (theme == "pe_dark")
+    if (theme == "pe_colored")
+    {
+        ui->themeComboBox->setCurrentIndex(0);
+    }
+    else if (theme == "pe_light")
     {
         ui->themeComboBox->setCurrentIndex(1);
     }
-    else if (theme == "pe_light")
+    else if (theme == "pe_dark")
     {
         ui->themeComboBox->setCurrentIndex(2);
     }
@@ -348,29 +371,25 @@ void LauncherPage::loadSettings()
     {
         ui->themeComboBox->setCurrentIndex(3);
     }
-    else if (theme == "pe_colored")
+    else if (theme == "OSX")
     {
         ui->themeComboBox->setCurrentIndex(4);
     }
-    else if (theme == "OSX")
+    else if (theme == "iOS")
     {
         ui->themeComboBox->setCurrentIndex(5);
     }
-    else if (theme == "iOS")
+    else if (theme == "flat")
     {
         ui->themeComboBox->setCurrentIndex(6);
     }
-    else if (theme == "flat")
+    else if (theme == "multimc")
     {
         ui->themeComboBox->setCurrentIndex(7);
     }
     else if (theme == "custom")
     {
         ui->themeComboBox->setCurrentIndex(8);
-    }
-    else
-    {
-        ui->themeComboBox->setCurrentIndex(0);
     }
 
     {
@@ -387,6 +406,13 @@ void LauncherPage::loadSettings()
             idx++;
         }
     }
+
+    // Toolbar/menu bar settings (not applicable if native menu bar is present)
+    ui->toolsBox->setEnabled(!QMenuBar().isNativeMenuBar());
+#ifdef Q_OS_MACOS
+    ui->toolsBox->setVisible(!QMenuBar().isNativeMenuBar());
+#endif
+    ui->preferMenuBarCheckBox->setChecked(s->get("MenuBarInsteadOfToolBar").toBool());
 
     // Console settings
     ui->showConsoleCheck->setChecked(s->get("ShowConsole").toBool());
@@ -423,11 +449,9 @@ void LauncherPage::loadSettings()
         ui->sortByNameBtn->setChecked(true);
     }
 
-    // Analytics
-    if(!BuildConfig.ANALYTICS_ID.isEmpty())
-    {
-        ui->analyticsCheck->setChecked(s->get("Analytics").toBool());
-    }
+    // Mods
+    ui->metadataDisableBtn->setChecked(s->get("DontUseModMetadata").toBool());
+    ui->metadataWarningLabel->setHidden(!ui->metadataDisableBtn->isChecked());
 }
 
 void LauncherPage::refreshFontPreview()
@@ -463,4 +487,9 @@ void LauncherPage::refreshFontPreview()
         workCursor.insertText(tr("[Something/WARN] A not so spooky warning."), format);
         workCursor.insertBlock();
     }
+}
+
+void LauncherPage::retranslate()
+{
+    ui->retranslateUi(this);
 }
