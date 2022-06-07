@@ -94,7 +94,7 @@ If you had trouble with this guide, check the following [unofficial video tutori
 
 Minecraft is mostly written in Java, which means that as long as you have a native arm64 Java installed, you can almost run the game natively. The only exception are some libraries like LWJGL, which have platform-specific binaries. Fortunately, all of them are open-source, so they can be re-built to work.
 
-This launcher is a fork of [MultiMC](https://github.com/MultiMC/Launcher), since the latter's development team is not willing to natively support arm64. To comply with MultiMC's licensing, this launcher was rebranded to ManyMC. To use the custom native libraries, a dedicated [meta package](https://github.com/MinecraftMachina/meta-multimc-arm64/) has been created.
+This launcher is a fork of [PolyMC](https://github.com/PolyMC/PolyMC), since the latter does not yet natively support arm64. To comply with PolyMC's licensing, this launcher was rebranded to ManyMC. To use the custom native libraries, a dedicated [meta package](https://github.com/MinecraftMachina/meta-multimc-arm64/) has been created.
 
 ## Building
 
