@@ -8,7 +8,7 @@
 
 ---
 
-> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC or PolyMC team. Only report issues with ManyMC here.
+> ### ⚠️ ManyMC is an official project of the PolyMC organization. Despite this, please only report issues with ManyMC here.
 
 ---
 
