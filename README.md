@@ -14,7 +14,7 @@
 
 ## Supported versions
 
-All stable versions of Minecraft from `1.6.4` to `1.18` have been tested and work great. [Fabric](https://fabricmc.net), [Forge](https://forums.minecraftforge.net), and [OptiFine](https://optifine.net/home) also work across all versions. Even huge modpacks like [All the Mods 6](https://www.curseforge.com/minecraft/modpacks/all-the-mods-6) run perfectly!
+All stable versions of Minecraft from `1.6.4` to the latest have been tested and work great. [Fabric](https://fabricmc.net), [Forge](https://forums.minecraftforge.net), and [OptiFine](https://optifine.net/home) also work across all versions. Even huge modpacks like [All the Mods 6](https://www.curseforge.com/minecraft/modpacks/all-the-mods-6) run perfectly!
 
 ## Community
 
