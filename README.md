@@ -26,45 +26,23 @@ Can't sprint and attack at the same time? Or sneak and scroll? These are all old
 
 ## Install
 
-There are two ways to install ManyMC, please choose one:
-
-### Homebrew *(recommended)*
-
-1. Install [brew](https://brew.sh) if you haven't already
-
-2. In a Terminal, run the following commands one by one. This will install the correct versions of Java 8, Java 17, and ManyMC:
-   ```sh
-   brew tap homebrew/cask-versions
-   brew install zulu8 zulu17
-   brew install --no-quarantine ManyMC
-   ```
-
-3. Run ManyMC as normal (it's in `/Applications/ManyMC`)
-4. Depending on which version of Minecraft you want to play, you will need to use a different version of Java. Use the table below to find the correct Java path for your Minecraft version, and select it when ManyMC prompts you:
-
-   | Minecraft Version  | Java Version | Architecture | Path                                                          |
-   | -----------------| ------------ | ------------ | ------------------------------------------------------------  |
-   | 1.16 and below    | 1.8.0_X   | aarch64      | /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin/java |
-   | 1.17 and above    | 17.X.X     | aarch64      | /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home/bin/java |
-
-     > :information_source: NOTE: You can always change the Java version individually by selecting a Minecraft instance and clicking on `Edit instance > Settings > Java installation`.
-
-5. To update ManyMC in the future, simply run the following command in a Terminal, your data will not be affected:
-
-    ```sh
-    brew upgrade --no-quarantine ManyMC
-    ```
+~~There are two ways to install ManyMC, please choose one~~ Since brew removed the different versions of the Azul OpenJDK, only one way of installing is currently supported : the manual way.
 
 ### Manual
 
-1. Make sure you have the correct `arm64` native Java installed for the version of Minecraft you want to play. Check step 4 in the section above if you don't know. For example, you can use [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk) or [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk).
+1. Install the Azul OpenJDK 17 and Azul OpenJDK 8 in arm64 versions with these links. These are versions of Java made for the processor type of the Mx Macs :
+- [Azul OpenJDK 17 arm64](https://www.azul.com/downloads/?version=java-17-lts&os=macos&architecture=arm-64-bit&package=jdk)
+- [Azul OpenJDK 8 arm64](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)
 
 2. Download the [latest release](https://github.com/MinecraftMachina/ManyMC/releases/latest/download/ManyMC.zip) of ManyMC and extract it. You can move the app to your "Applications" folder if you like.
 3. Start ManyMC. If it gives an error about "developer cannot be verified", one time only, do not double-click on the app, but instead right-click on it and press `Open`, then `Open` again.
 
-4. As you go through the initial setup, make sure to select the correct `arm64` native Java for the version of Minecraft you want to play. For example, for Minecraft 1.17, you will need Java 17, like so:
+4. As you go through the initial setup, make sure to select the correct `arm64` native Java for the version of Minecraft you want to play. Depending on which version of Minecraft you want to play, you will need to use a different version of Java. Use the table below to find the correct Java path for your Minecraft version, and select it when ManyMC prompts you:
 
-   ![](wiki/pic1.png)
+   | Minecraft Version  | Java Version | Architecture | Path                                                                 |
+   | ------------------ | ------------ | ------------ | -------------------------------------------------------------------- |
+   | 1.16 and below     | 1.8.0_X      | aarch64      | /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin/java  |
+   | 1.17 and above     | 17.X.X       | aarch64      | /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home/bin/java |
    
    > :information_source: NOTE: You can always change the Java version individually by selecting a Minecraft instance and clicking on `Edit instance > Settings > Java installation`.
 
