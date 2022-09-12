@@ -8,7 +8,17 @@
 
 ---
 
-> ### ⚠️ ManyMC is an official project of the PolyMC organization. Despite this, please only report issues with ManyMC here.
+> ### ⚠️ The ManyMC launcher is no longer being updated.
+It is now super easy to configure PolyMC for the full ARM-native experience, and I have shifted my focus to only maintaining the libraries necessary to facilitate this. Simply grab yourself the latest version of PolyMC, and change the metadata server like this:
+
+Go to `Settings` > `APIs` and under `Metadata Server`, set:
+```
+https://minecraftmachina.github.io/meta-multimc-arm64/
+```
+
+That's all! PolyMC will now bring you the full ManyMC experience!
+
+![](https://cdn.discordapp.com/attachments/919306694998253591/1019027458361655326/unknown.png)
 
 ---
 
