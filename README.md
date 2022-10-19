@@ -8,7 +8,27 @@
 
 ---
 
-> ### ⚠️ ManyMC is NOT SUPPORTED by the MultiMC or PolyMC team. Only report issues with ManyMC here.
+> ### ⚠️ The ManyMC launcher is no longer being updated.
+
+Prism Launcher is the official continuation of ManyMC. It is actively developed by numerous maintainers, and directly inherits all of ManyMC's ARM patches. Migrating is super easy:
+
+1. Close all launchers
+2. Run the following commands from a Terminal:
+
+   ```bash
+   cd ~/Library/Application\ Support
+   mv ManyMC PrismLauncher
+   cd PrismLauncher
+   mv manymc.cfg prismlauncher.cfg
+   rm -r meta metacache cache libraries
+   ```
+
+Find Prism here: \
+https://github.com/PrismLauncher/PrismLauncher \
+https://discord.gg/prismlauncher
+
+The ManyMC Discord guild is not going away, and it continues to be a place to reach me. Feel free to join: \
+https://discord.gg/CcFxPaDnjv
 
 ---
 
